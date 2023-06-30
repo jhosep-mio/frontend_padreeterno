@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'oswald';
+    src: url('oswald.eot');
+    src: url('oswald.eot?#iefix') format('embedded-opentype'),
+         url('oswald.woff2') format('woff2'),
+         url('oswald.woff') format('woff'),
+         url('oswald.ttf') format('truetype'),
+         url('oswald.svg#oswald_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'facebook';
+    src: url('facebook-letter-faces.woff2') format('woff2'),
+         url('facebook-letter-faces.woff') format('woff'),
+         url('facebook-letter-faces.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face{
+    font-family: 'PaytoneOne';
+    src: url('PaytoneOne.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'oktober';
+    src: url('oktober.ttf') format('truetype');
+    src: url('oktober.woff2') format('woff2'),
+         url('oktober.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'zikketica';
+    src: url('zikketica.ttf') format('truetype');
+    src: url('zikketica.woff2') format('woff2'),
+         url('zikketica.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'zil';
+    src: url('zil.ttf') format('truetype');
+    src: url('zil.woff2') format('woff2'),
+         url('zil.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'prosto';
+    src: url('prosto.ttf') format('truetype');
+    src: url('prosto.woff2') format('woff2'),
+         url('prosto.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'BebasNeue';
+    src: url('BebasNeueBold.eot');
+    src: url('BebasNeueBold.eot?#iefix') format('embedded-opentype'),
+         url('BebasNeueBold.woff') format('woff'),
+         url('BebasNeueBold.ttf') format('truetype'),
+         url('BebasNeueBold.svg#BebasNeueBold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'InfiniteStrokeBolder';
+    src: url('InfiniteStrokeBolder.woff') format('woff'),
+         url('InfiniteStrokeBolder.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
