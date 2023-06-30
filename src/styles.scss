@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Taviraj:wght@300&display=swap');
+html{
+    font-size: 62.5%;
+    font-family: 'Taviraj', serif;
+}
+
+/*************** HEADER **********/
+.header{
+    box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.56);
+    -webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.56);
+    -moz-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.56);
+
+    &__bar{
+
+        background: #29479F;
+        padding: 8px 80px;
+
+        display: flex;
+        justify-content: space-between;
+
+        &__contact{
+
+            display: flex;
+            gap: 20px;
+
+            a{
+                display: flex;
+                align-items: center;
+                color: #fff;
+                gap: 5px;
+                font-size: 1.6rem;
+            }
+        }
+
+        &__media{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            a{
+                font-size: 2.2rem;
+                color: #fff;
+            }
+        }
+    }
+
+    &__menu{
+        padding: 0 80px;
+        display: flex;
+        gap: 20px;
+
+
+        &__logo{
+            width: 20%;
+
+            img{
+                max-width: 280px;
+            }
+        }
+
+        &__nav{
+            width: 80%;
+            display: flex;
+            align-items: center;
+            
+
+            ul{
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                place-items: center;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+
+                li{
+
+                    &:hover{
+                        ul{
+                            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                        }
+                    }
+
+                    a{
+                        font-size: 1.6rem;
+                        display: flex;
+                        width: 100%;
+                        font-weight: 600;
+                        text-align: center;
+                        align-items: center;
+                        gap: 3px;
+                        position: relative;
+                        transition: all ease-out .3s;
+
+                       
+
+                        &:hover{
+                            color: #006137;
+                            letter-spacing: 2px;
+                        }
+                    }
+
+                    position: relative;
+
+                    ul{
+                        position: absolute;
+                        background: #fff;
+                        top: 100%;
+                        width: 150%;
+                        padding: 20px 0 10px 0;
+                        left: 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        transition: all ease-out .3s ;
+                        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+
+
+                        li{
+                            a{
+                                text-align: left;
+                                display: flex;
+                                padding: 5px 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/************** SLIDES **********/
+
+.swp_slider{
+
+    height: 100%;
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+.swp_categorias{
+
+}
+
+/************ SECCIONES ********/
+
+#slider{
+    height: calc(100vh - 174px);
+
+    
+}
+
+.sectCategorias{
+    padding: 50px 80px;
+    background: #fff;
+
+    &__slide{
+        &__card{
+            background: #29479F;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all ease-out .3s;
+
+            &:hover{
+                border-radius: 25px;
+            }
+
+
+            &__img{
+                overflow: hidden;
+                img{
+                    transition: all ease-out .3s;
+
+                    &:hover{
+                        transform: scale(1.4);
+                        filter: brightness(1.3);
+                    }
+                }
+            }
+
+            &__title{
+                padding: 15px 0;
+                h5{
+                    font-size: 1.6rem;
+                    text-align: center;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+/*********** PRODUCTOS */
+.swp_productos{
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.swp_productos .swiper-wrapper{
+    flex-direction: row;
+}
+
+.swp_productos .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    height: calc((100% - 30px) / 2) !important;
+  
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+
