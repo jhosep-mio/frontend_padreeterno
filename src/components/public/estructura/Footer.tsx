@@ -1,87 +1,127 @@
-import { icono, logo } from '../../shared/images'
-import {
-  RiFacebookCircleFill,
-  RiInstagramLine,
-  RiWhatsappLine,
-  RiMapPinLine,
-  RiMailSendLine,
-  RiPhoneLine
-} from 'react-icons/ri'
-
+import { useState, useEffect } from 'react'
 import { FloatingWhatsApp } from 'react-floating-whatsapp'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { Global } from '../../../helper/Global'
+import { FaTiktok } from 'react-icons/fa'
+import { type categoriasValues } from '../../shared/Interfaces'
+import { c1, c2, c3, c4, c5, c6, exportandonline, icono } from '../../shared/images'
 
 export const Footer = (): JSX.Element => {
+  const [categorias, setCategorias] = useState([])
+
+  const getAllCategorias = async (): Promise<void> => {
+    const request = await axios.get(`${Global.url}/allCategorias`)
+    setCategorias(request.data)
+  }
+
+  useEffect(() => {
+    getAllCategorias()
+  }, [])
+
   return (
-    <footer className="w-full bg-secondary py-28 h-full">
-      <section className="grid grid-cols-1 gap-20 lg:gap-0 h-full w-full md:w-[80%] justify-between mx-auto lg:h-96 md:grid-cols-2 lg:grid-cols-4">
-        <div className="w-full px-10">
-          <img src={logo} alt="" className="mx-auto" />
-        </div>
-        <div className="w-full px-10 flex flex-col gap-10 lg:gap-0 justify-between">
-          <h2 className="font-bold text-4xl text-primary text-center md:text-left">
-            Dioselyna
-          </h2>
-          <ul className="flex flex-col gap-3 text-3xl text-center md:text-left">
-            <li>Luminarias de Alumbrado Publico</li>
-            <li>Reflectores Led</li>
-            <li>Paneles Led</li>
-            <li>Luminarias Acuáticas</li>
-            <li>Luminarias de Emergencia Led</li>
-          </ul>
-        </div>
-        <div className="w-full px-10 flex flex-col gap-10 lg:gap-0 justify-between">
-          <h3 className="font-bold text-4xl text-primary text-center md:text-left">
-            ¿Alguna duda?
-          </h3>
-          <ul className="flex flex-col gap-3 text-3xl text-center md:text-left">
-            <li>Contacto</li>
-            <li>Nosotros</li>
-          </ul>
-          <div className="flex justify-center md:justify-start lg:justify-center gap-5">
-            <RiFacebookCircleFill className="text-white bg-blue-700 text-5xl rounded-full w-16 h-16 p-3" />
-            <RiInstagramLine className="text-white bg-pink-600 text-5xl rounded-full w-16 h-16 p-3" />
-            <RiWhatsappLine className="text-white bg-green-400 text-5xl rounded-full w-16 h-16 p-3" />
-          </div>
-        </div>
-        <div className="w-full px-10 flex flex-col gap-10 lg:gap-0 justify-between">
-          <h3 className="font-bold text-4xl text-primary text-center md:text-left">
-            Contacto
-          </h3>
-          <ul className="flex flex-col gap-3 w-[70%] mx-auto md:w-full">
-            <li className="flex gap-3 ">
-              <RiMapPinLine className=" text-primary w-auto text-4xl" />
-              <p className="text-3xl text-justify flex-grow w-full">
-                Av. argentina 275 c.c. nicolini pasaje 6 puesto u-11 Lima
-              </p>
-            </li>
-            <li className="flex gap-3 items-center">
-              <RiMailSendLine className=" text-primary w-auto text-4xl" />
-              <p className="text-3xl text-justify flex-grow w-full">
-                ventas.dioselyna@gmail.com
-              </p>
-            </li>
-            <li className="flex gap-3 items-center">
-              <RiPhoneLine className=" text-primary w-auto text-4xl" />
-              <p className="text-3xl text-justify flex-grow w-full">
-                959-075-511
-              </p>
-            </li>
-          </ul>
-        </div>
-      </section>
-      <section></section>
+    <>
+      <footer className="fot-bground1">
+          <section className="boxfotter">
+              <div className="container">
+                  <div className="row">
+                      <div className="col-md-3">
+                          <div className="info">
+                              <h4>NOSOTROS</h4>
+                              <div className="footnoso">
+                                  <p className="text-justify">
+                                  Nos inspiran las mujeres que lo pueden todo, por ellas el mundo entero. Somos Padre Eterno, una empresa peruana. Tenemos como bandera el amor. Envía flores ¡Hoy!
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div className="col-md-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div className="enlaces">
+                              <h4>CATEGORIAS</h4>
+                              <ul>
+                                {categorias.map((cate: categoriasValues, index) => (
+                                  index < 7
+                                    ? <li key={cate.id} className='text-white'><Link to={`/categories/${cate.id}-${cate.nombre}`} className='text-white'>{cate.nombre}</Link></li>
+                                    : ''
+                                ))}
+                              </ul>
+                          </div>
+                      </div>
+
+                      <div className="col-md-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div className="enlaces">
+                              <h4>MENU</h4>
+                              <ul>
+                                  <li><Link to="/home"> Inicio</Link></li>
+                                  <li><Link to="/about-us"> Tienda</Link></li>
+                                  <li><Link to="/sales"> Servicios</Link></li>
+                                  <li><Link to="/packages"> Contacto</Link></li>
+                                  <li><Link to="/support"> Iniciar Sesión</Link></li>
+                                  <li><Link to="/support"> Registrate</Link></li>
+                              </ul>
+                          </div>
+                      </div>
+
+                      <div className=" col-md-3">
+                          <div className="contact_us">
+                              <h4>PRODUCTOS</h4>
+                              <div className="row" style={{ margin: '0' }}>
+                                  <ul className="list-colec">
+                                      <li><img src={c1}/></li>
+                                      <li><img src={c2}/></li>
+                                      <li><img src={c3}/></li>
+                                      <li><img src={c4}/></li>
+                                      <li><img src={c5}/></li>
+                                      <li><img src={c6}/></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+          </section>
+
+          <section className="fot-bgcopy">
+              <div className="container">
+                  <div className="row">
+                      <div className="col-md-8 ">
+                          <p className="fot-copyright1">
+                              © 2023 Copyright -
+                              <Link to="../../home">Padre eterno</Link>
+                              - All rights reserved
+                          </p>
+                          <p className="fot-copyright1 flex" >
+                             <Link style={{ display: 'flex', color: 'white' }} to="https://logosperu.com/" target="_blank">Design by <img src={exportandonline} width="18" className='ml-3'/></Link>
+                          </p>
+                      </div>
+                      <div className="col-md-4">
+                          <ul className="list-redes">
+                              <li><Link target='_blank' to="https://www.facebook.com/people/Abrill/100092526204038/"><i className="fa fa-facebook" aria-hidden="true"></i></Link></li>
+                              {/* <li><Link to="#"><i className="fa fa-twitter" aria-hidden="true"></i></Link></li> */}
+                              <li><Link target='_blank' to="https://www.tiktok.com/@abrill_llc?lang=en"><FaTiktok/></Link></li>
+                              {/* <li><Link ><i className="fa fa-google-plus-official" aria-hidden="true"></i></Link></li>  */}
+                              <li><Link target='_blank' to="https://www.instagram.com/abrillflowers/"><i className="fa fa-instagram" aria-hidden="true"></i></Link></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </footer>
       <FloatingWhatsApp
-        phoneNumber="+51923082893"
-        accountName="Dioselyna"
+        phoneNumber="+12035545219"
+        accountName="Abrill Flowers"
         statusMessage="En linea"
         placeholder="Envianos un mensaje"
-        chatMessage="Hola un gusto! 🤝, Como podemos ayudarte?"
+        chatMessage ="Hello, it's a pleasure! 🤝, How can we help you?"
         avatar={icono}
         allowEsc
         allowClickAway
         notification
         notificationSound
-      />
-    </footer>
+        />
+
+    </>
   )
 }

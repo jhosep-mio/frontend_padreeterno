@@ -1,0 +1,15 @@
+@use './settings' as v;
+
+.section_paquetes{
+    & .prodlist-grid > li.pogrid{
+        width: 25% !important;
+    }
+}
+.protop-imgblock{
+    height: 270px;
+}
+.protop-imgref{
+    img{
+        height: 100%;
+    }
+}
