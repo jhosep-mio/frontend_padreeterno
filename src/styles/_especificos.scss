@@ -1,0 +1,370 @@
+@use './settings' as v;
+.loading-success{
+    // width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 999999999;
+    inset: 0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: fixed;
+    &-content{
+        position: relative;
+
+        img{
+            width: 150px;
+            height: 150px;
+            margin: auto;
+            object-fit: contain;
+        }
+
+        &-giro{
+            position: absolute;
+            inset: 0;
+            -webkit-animation: load3 1.4s infinite linear;
+            animation: load3 1.4s infinite linear;
+
+            &:before {
+                width: 40px;
+                height: 40px;
+                background: rgb(229, 178, 83);
+                border-radius: 65% 0;
+                position: absolute;
+                top: -40px;
+                left: 0;
+                content: "";
+              }
+
+              &:after {
+                // background-image: url('./../assets/images/logos/icon_paloma.png');
+                width: 75%;
+                height: 75%;
+                border-radius: 50%;
+                content: '';
+                margin: auto;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+              }
+
+            @-webkit-keyframes load3 {
+                0% {
+                  -webkit-transform: rotate(0deg);
+                  transform: rotate(0deg);
+                }
+                100% {
+                  -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+                }
+              }
+              @keyframes load3 {
+                0% {
+                  -webkit-transform: rotate(0deg);
+                  transform: rotate(0deg);
+                }
+                100% {
+                  -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+                }
+              }
+        }
+
+
+    }
+}
+
+.data_desc{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p{
+    margin: 0;
+  }
+
+  svg{
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
+
+.visually-hidden{
+    display: none;
+}
+.iti-bgs1{
+    position: relative;
+}
+.total_lenght{
+    position: absolute;
+    left: 0;
+    top: 0;
+    p{
+        margin: 0;
+        padding: 20px;
+        color: black;
+        font-weight: 500;
+    }
+}
+
+.iti-pane1{
+    & .pagination{
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+
+        li{
+            height: 35px;
+            background: transparent;
+            a{
+                height: 100%;
+                display: flex;
+                align-items: center;
+                // border-radius: 50%;
+            }
+            span{
+                // border-radius: 50%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.pagination > .active > span{
+   background: v.$gradiante-main;
+   border: none;
+}
+
+
+#productos_previous svg{
+    color: v.$main;
+    font-weight: 700;
+    font-size: larger;
+}
+
+
+#productos_next svg{
+    color: v.$main;
+    font-weight: 700;
+    font-size: larger;
+}
+
+.content_notfound{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+    gap: 30px;
+
+    img{
+        width: 300px;
+        height: 100%;
+        object-fit: contain;
+    }
+    p{
+        font-size: 22px;
+        color: black;
+        font-weight: 400;
+    }
+}
+
+
+/*CARRITO*/
+.sect_pasos{
+    padding: 50px 0;
+}
+.list_pasos{
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+    display: flex;
+    flex-flow: row wrap;
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+}
+.list_pasos:before{
+    content: "";
+    position: absolute;
+    top: 29%;
+    left: 0;
+    right: 0;
+    width: 70%;
+    margin: 0 auto;
+    height: 3px;
+    background: #e9e9e9;
+    z-index: -1;
+}
+.list_pasos>li{
+    width: 30%;
+    margin: 0 auto;
+    text-align: center;
+}
+.list_pasos>li .box_pasos>span{
+        width: 50px;
+    display: block;
+    margin: 0 auto;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9e9e9;
+    color: #747474;
+    font-size: 20px;
+    border-radius: 50%;
+}
+.list_pasos>li.active .box_pasos>span{
+    background: v.$main;
+    color: #fff;
+    transition: all ease 500ms;
+}
+.list_pasos>li.active .box_pasos>span:hover{
+    border-radius: 0;
+    border: 2px solid #000;
+    box-shadow: 0px 0px 5px #454545;
+    transition: all ease 500ms;
+}
+.list_pasos>li.active .box_pasos h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+}
+.list_pasos>li .box_pasos h4{
+    font-size: 15px;
+    font-weight: 700;
+    color: #868686;
+}
+.tbl_cart{
+    width: 100%;
+    border: 2px solid #000;
+}
+.tbl_cart thead th{
+    padding: 10px 0;
+    background: -webkit-linear-gradient(left, #181818, #3a3939,#181818);
+    color: #fff;    
+    text-align: center;
+    vertical-align: middle !important;
+}
+.tbl_cart tbody td{
+    padding: 5px 0;
+    text-align: center;
+    color: #000;
+    vertical-align: middle !important;
+}
+.input_cant{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+.tbl_cart tr{
+    border-bottom: 2px solid #393838;
+}
+.input_cant:focus{
+    outline: none;
+    border: 2px solid #1ccaa8;
+}
+.delete_p{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    transition: all ease 500ms;
+}
+.delete_p:focus{
+    outline: none;
+}
+.delete_p:hover{
+    background: #1ccaa8;
+    color: #fff;
+    transition: all ease 500ms;
+}
+.tbl_proceso{
+    width: 40%;
+    margin-left: auto;
+    background: #000;
+    color: #fff;
+    border: 2px solid #1ccaa8;
+}
+.tbl_proceso tbody th{
+   padding: 20px 0 !important;
+    text-align: center;
+    border-top: 0 !important;
+    font-size: 16px;  
+}
+.tbl_proceso tbody td{
+    text-align: right;
+    border-top: 0 !important;
+    vertical-align: middle !important;
+    text-align: center;
+}
+.tr_red{
+    color: v.$main;
+}
+.btn_procesa{
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px 0;
+    background: #fff;
+    color: #236CA6;
+    font-weight: 800;
+    z-index: 1;
+    position: relative;
+}
+.btn_procesa:hover{
+    color: #fff;
+}
+.btn_procesa:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 50%;
+    background: v.$main;
+    z-index: -1;
+    transition: all ease 500ms;
+}
+.btn_procesa:after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0%;
+    height: 50%;
+    background: v.$main;
+    transition: all ease 500ms;
+    z-index: -1;
+}
+
+.btn_procesa:hover:before{
+    width: 100%;
+    transition: all ease 500ms;
+}
+.btn_procesa:hover:after{
+    width: 100%;
+    transition: all ease 500ms;
+}
+
+@media(max-width: 767px){
+    .tbl_proceso {
+        width: 100%;
+    }
+    .list_pasos>li {
+        display: none;
+    }
+    .list_pasos>li.active {
+        display: block;
+        width: 100%;
+    }
+}
+
+/*END INTERNA CARRITO*/

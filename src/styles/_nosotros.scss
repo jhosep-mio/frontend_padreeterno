@@ -1,0 +1,9 @@
+@use './settings' as v;
+
+.icon_menu_Bar {
+    color: red;
+
+    path{
+        stroke: v.$main
+    }
+}

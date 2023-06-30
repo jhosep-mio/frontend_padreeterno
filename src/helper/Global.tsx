@@ -1,4 +1,4 @@
 export const Global = {
-  url: 'https://api.adsgroupsac.com/api',
-  urlImages: 'https://api.adsgroupsac.com'
+  url: 'http://192.168.0.109:8005/api',
+  urlImages: 'http://192.168.0.109:8005'
 }
