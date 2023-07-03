@@ -31,7 +31,7 @@
         width: 100%;
         max-width: 550px;
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: column;
         height: 500px;
 
         img{
@@ -166,7 +166,6 @@
                 display: flex;
                 align-items: center;
                 gap: 20px;
-                padding-top: 20px;
 
                 &-contador{
                     width: 50px;
@@ -391,7 +390,7 @@
                         width: 100%;
                         margin-top: 15px;
                         background-color: v.$main;
-                        background: v.$gradiante-main;
+                        background: #FF0F29;
                         border: none;
                         padding: 8px;
                         font-size: 13px;
@@ -426,14 +425,14 @@
         border: none;
         border-radius: 15px;
         padding: 10px 15px;
-        background: v.$gradiante-main;
+        background: #FF0F29;
         color:white;
         display: flex;
         align-items: center;
         font-size: 17px;
         font-weight: 400;
-        box-shadow: inset 6px -6px 16px #c09646,
-            inset -6px 6px 16px #ffce60;
+        box-shadow: inset 6px -6px 16px #a01d2a,
+            inset -6px 6px 16px #FF0F29;
             
         svg{
             color: white;

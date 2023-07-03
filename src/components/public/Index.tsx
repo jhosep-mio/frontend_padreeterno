@@ -16,9 +16,10 @@ import {
 } from '../shared/Interfaces'
 import { Link, useNavigate } from 'react-router-dom'
 import { t3 } from '../shared/images'
+import Loading from '../shared/Loading'
 
 export const Index = (): JSX.Element => {
-  const { setLoadingComponents } = useAuth()
+  const { loadingComponents, setLoadingComponents } = useAuth()
   const [banners, setBanners] = useState<never[]>([])
   const [favorites, setFavorites] = useState<never[]>([])
   const [nuevos, setNuevos] = useState<never[]>([])
@@ -26,6 +27,7 @@ export const Index = (): JSX.Element => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    setLoadingComponents(true)
     Promise.all([
       getData('allBanners', setBanners),
       getData('productosWhereFavorites', setFavorites),
@@ -52,6 +54,7 @@ export const Index = (): JSX.Element => {
 
   return (
     <>
+      {loadingComponents && <Loading />}
       <section id="slider" className="topsectglobal wow slideInRight">
         <Swiper
           pagination={{ clickable: true }}
@@ -115,9 +118,6 @@ export const Index = (): JSX.Element => {
           <div className="producc">
             <div className="row">
               <div className="col-md-12">
-                <div className="owl-carousel produc owl-theme">
-                  <div className="boxmodel"></div>
-                </div>
                 <Swiper
                   slidesPerView={4}
                   spaceBetween={30}
@@ -153,7 +153,9 @@ export const Index = (): JSX.Element => {
                         className="div_img"
                         onClick={() => {
                           navigate(
-                            `/detail/${pro.id}-${formatearURL(pro.nombre)}`
+                            `/producto-descripcion/${pro.id}-${formatearURL(
+                              pro.nombre
+                            )}`
                           )
                         }}
                         style={{ cursor: 'pointer' }}
@@ -179,7 +181,9 @@ export const Index = (): JSX.Element => {
                       <h3
                         onClick={() => {
                           navigate(
-                            `/detail/${pro.id}-${formatearURL(pro.nombre)}`
+                            `/producto-descripcion/${pro.id}-${formatearURL(
+                              pro.nombre
+                            )}`
                           )
                         }}
                         style={{ cursor: 'pointer', marginBottom: '25px' }}
@@ -189,8 +193,13 @@ export const Index = (): JSX.Element => {
                         </a>
                       </h3>
                       <span className="price ">
-                        <span className="precio">S/ 100</span>
+                        <span className="precio">S/ {pro.precio}</span>
                       </span>
+                      <del className="w-full block">
+                        <span className="w-full block text-center">
+                          S/ {pro.oferta}
+                        </span>
+                      </del>
                       <div className="strella">
                         <ul>
                           <li>
@@ -221,13 +230,12 @@ export const Index = (): JSX.Element => {
                         </ul>
                       </div>
                       <Link
-                        to=""
+                        to={`/producto-descripcion/${pro.id}-${formatearURL(
+                          pro.nombre
+                        )}`}
                         className="button vemasprod"
-                        // onClick={(e) => (
-                        //   e.preventDefault(), handleAddToCart(pro)
-                        // )}
                       >
-                        AGREGAR AL CARRITO
+                        VER PRODUCTO
                       </Link>
                     </SwiperSlide>
                   ))}
@@ -247,20 +255,39 @@ export const Index = (): JSX.Element => {
                 modules={[Pagination]}
                 slidesPerView={3}
                 className="oferta"
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1,
+                    spaceBetween: 20
+                  },
+                  500: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                  },
+                  1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                  },
+                  1200: {
+                    slidesPerView: 4,
+                    spaceBetween: 30
+                  }
+                }}
               >
                 {categorias.map((categoria: categoriasValues) => (
-                  <SwiperSlide key={categoria.id}>
+                  <SwiperSlide key={categoria.id} className="py-14">
                     <div className="flowstitle">
                       <Link to="">
                         <h2>{categoria.nombre}</h2>
                         <p className="flowscuerpo">
                           Envía un obsequio a quien más quieres.
                         </p>
-                        <div className="flowsimage">
+                        <div className="flowsimage h-[350px]">
                           <img
                             loading="lazy"
                             src={`${Global.urlImages}/categorias/${categoria.imagen1}`}
                             alt=""
+                            className="h-full object-cover"
                             width="100%"
                           />
                         </div>
@@ -288,12 +315,10 @@ export const Index = (): JSX.Element => {
           <div className="producc">
             <div className="row">
               <div className="col-md-12">
-                <div className="owl-carousel produc owl-theme">
-                  <div className="boxmodel"></div>
-                </div>
                 <Swiper
                   slidesPerView={4}
                   spaceBetween={30}
+                  modules={[Pagination, Autoplay]}
                   loop={true}
                   autoplay={{
                     delay: 4500,
@@ -302,7 +327,8 @@ export const Index = (): JSX.Element => {
                   breakpoints={{
                     0: {
                       slidesPerView: 1,
-                      spaceBetween: 20
+                      spaceBetween: 20,
+                      pagination: true
                     },
                     500: {
                       slidesPerView: 2,
@@ -317,7 +343,6 @@ export const Index = (): JSX.Element => {
                       spaceBetween: 30
                     }
                   }}
-                  modules={[Autoplay]}
                   className="mySwiper produc"
                 >
                   {nuevos.map((pro: productosValues) => (
@@ -326,7 +351,9 @@ export const Index = (): JSX.Element => {
                         className="div_img"
                         onClick={() => {
                           navigate(
-                            `/detail/${pro.id}-${formatearURL(pro.nombre)}`
+                            `/producto-descripcion/${pro.id}-${formatearURL(
+                              pro.nombre
+                            )}`
                           )
                         }}
                         style={{ cursor: 'pointer' }}
@@ -352,7 +379,9 @@ export const Index = (): JSX.Element => {
                       <h3
                         onClick={() => {
                           navigate(
-                            `/detail/${pro.id}-${formatearURL(pro.nombre)}`
+                            `/producto-descripcion/${pro.id}-${formatearURL(
+                              pro.nombre
+                            )}`
                           )
                         }}
                         style={{ cursor: 'pointer', marginBottom: '25px' }}
@@ -362,8 +391,13 @@ export const Index = (): JSX.Element => {
                         </a>
                       </h3>
                       <span className="price ">
-                        <span className="precio">S/ 100</span>
+                        <span className="precio">S/ {pro.precio}</span>
                       </span>
+                      <del className="w-full block">
+                        <span className="w-full block text-center">
+                          S/ {pro.oferta}
+                        </span>
+                      </del>
                       <div className="strella">
                         <ul>
                           <li>
@@ -394,13 +428,12 @@ export const Index = (): JSX.Element => {
                         </ul>
                       </div>
                       <Link
-                        to=""
+                        to={`/producto-descripcion/${pro.id}-${formatearURL(
+                          pro.nombre
+                        )}`}
                         className="button vemasprod"
-                        // onClick={(e) => (
-                        //   e.preventDefault(), handleAddToCart(pro)
-                        // )}
                       >
-                        AGREGAR AL CARRITO
+                        VER PRODUCTO
                       </Link>
                     </SwiperSlide>
                   ))}
@@ -411,13 +444,13 @@ export const Index = (): JSX.Element => {
         </div>
       </section>
 
-      <section className="testimon">
+      <section className="py-20 px-5">
         <div className="container">
-          <div className="row flex items-center">
+          <div className="row md:flex items-center">
             <div className="col-md-6">
               <img className="testimg" src={t3} />
             </div>
-            <div className="col-md-6 testigo">
+            <div className="col-md-6 testigo w-full lg:w-1/2">
               <Swiper
                 slidesPerView={1}
                 spaceBetween={30}
@@ -426,7 +459,7 @@ export const Index = (): JSX.Element => {
                   clickable: true
                 }}
                 modules={[Pagination]}
-                className="mySwiper testimoniosss h-full"
+                className="mySwiper testimoniosss h-full "
               >
                 <SwiperSlide className="py-24">
                   <h2 className="text-justify">
@@ -500,6 +533,25 @@ export const Index = (): JSX.Element => {
                 spaceBetween={30}
                 loop={true}
                 className="mySwiper clients1 xhm-client1 owl-theme owl-loaded owl-drag"
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    pagination: true
+                  },
+                  500: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 30
+                  },
+                  1200: {
+                    slidesPerView: 5,
+                    spaceBetween: 30
+                  }
+                }}
               >
                 <SwiperSlide className="py-24">
                   <div className="owl-item cloned">

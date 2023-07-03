@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { GrClose, GrMenu } from 'react-icons/gr'
-// import producto from '../../../assets/public/img/producto/producto-1.jpg';
-// import { BsFillTrashFill } from 'react-icons/bs'
-// import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import { icono, logo } from '../../shared/images'
-// import { Global } from '../../../helper/Global'
-// import { FaMinus, FaPlus } from 'react-icons/fa'
 import { IoCall } from 'react-icons/io5'
+import useAuth from '../../../hooks/useAuth'
+import { Global } from '../../../helper/Global'
+import { DecrementProducto } from '../../shared/carrito/DecrementProducto'
+import { IncrementProducto } from '../../shared/carrito/IncrementProducto'
+import { Subtotal } from '../../shared/carrito/Subtotal'
+import { RemoveItem } from '../../shared/carrito/RemoveItem'
+import { Total } from '../../shared/carrito/Total'
 export const Header = (): JSX.Element => {
   const [abrirModal, setAbrirModal] = useState(false)
   const navigate = useNavigate()
@@ -19,7 +21,7 @@ export const Header = (): JSX.Element => {
   const handleShow = (): void => {
     setShow(true)
   }
-  //   const { cart, removeItemFromCart, decreaseItemQuantity, increaseItemQuantity, calculateItemSubtotal, calculateTotal } = useAuth({})
+  const { cart } = useAuth()
 
   useEffect(() => {
     const header = document.querySelector('.eonav-cntfluid') as Element
@@ -43,12 +45,11 @@ export const Header = (): JSX.Element => {
             <div className="w-[80%] flex flex-row justify-between mx-auto">
               <div className="flex items-center gap-10">
                 <span className="flex items-center text-xl text-black">
-                  {' '}
                   <IoCall className="text-main" /> (01) 4792367
                 </span>
-                <span className="flex items-center text-xl text-black">
+                <span className="md:flex items-center text-xl text-black">
                   {' '}
-                  <IoCall className="text-main" /> (01) 4792367
+                  <IoCall className="text-main" /> (+51) 994181726
                 </span>
               </div>
               <div>
@@ -101,33 +102,36 @@ export const Header = (): JSX.Element => {
                     </li>
                     <li>
                       <Link to="#" className="botlink-Bar pageCurrent">
-                        <h4 style={{ color: '#000' }}>Browser</h4>
+                        <h4 className="text-main font-semibold">Navegador</h4>
                       </Link>
                     </li>
                   </ul>
                   <ul className="nav-Listright">
-                    {/* <li>
-                          <Link to="./login.php">
-                            <h4>
-                                <span className="fa fa-user icon_ih"></span>
-                            </h4>
-                          </Link>
-                      </li> */}
                     <li>
-                      <Link to="" onClick={handleShow}>
-                        <h4 className="content_relative">
-                          <span className="fa fa-shopping-cart icon_ih"></span>
-                          <span className="contador_num">11</span>
+                      <Link to="login">
+                        <h4>
+                          <span className="fa fa-user icon_ih"></span>
                         </h4>
                       </Link>
                     </li>
-                    {/* <li>
-                          <Link to="https://api.whatsapp.com/send?phone=51999999999" target="_blank">
-                            <h4>
-                                <span className="fa fa-whatsapp icon_ih"></span>
-                            </h4>
-                          </Link>
-                      </li> */}
+                    <li>
+                      <Link to="#" onClick={handleShow}>
+                        <h4 className="content_relative">
+                          <span className="fa fa-shopping-cart icon_ih"></span>
+                          <span className="contador_num">{cart.length}</span>
+                        </h4>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="https://api.whatsapp.com/send?phone=51999999999"
+                        target="_blank"
+                      >
+                        <h4>
+                          <span className="fa fa-whatsapp icon_ih"></span>
+                        </h4>
+                      </Link>
+                    </li>
                   </ul>
                 </div>
 
@@ -172,51 +176,40 @@ export const Header = (): JSX.Element => {
                                     setAbrirModal(false)
                                   }}
                                 >
-                                  <span className="itemline-m">Home</span>
+                                  <span className="itemline-m">Inicio</span>
                                 </Link>
                               </li>
                               <li>
                                 <Link
-                                  to="/about-us"
+                                  to="/tienda"
                                   className="page-scroll"
                                   onClick={() => {
                                     setAbrirModal(false)
                                   }}
                                 >
-                                  <span className="itemline-m">About us</span>
+                                  <span className="itemline-m">Tienda</span>
                                 </Link>
                               </li>
                               <li>
                                 <Link
-                                  to="/sales"
+                                  to="/servicios"
                                   className="page-scroll"
                                   onClick={() => {
                                     setAbrirModal(false)
                                   }}
                                 >
-                                  <span className="itemline-m">Sales</span>
+                                  <span className="itemline-m">Servicios</span>
                                 </Link>
                               </li>
                               <li>
                                 <Link
-                                  to="/packages"
+                                  to="/contacto"
                                   className="page-scroll"
                                   onClick={() => {
                                     setAbrirModal(false)
                                   }}
                                 >
-                                  <span className="itemline-m">Packages</span>
-                                </Link>
-                              </li>
-                              <li>
-                                <Link
-                                  to="/support"
-                                  className="page-scroll"
-                                  onClick={() => {
-                                    setAbrirModal(false)
-                                  }}
-                                >
-                                  <span className="itemline-m">Support</span>
+                                  <span className="itemline-m">Contacto</span>
                                 </Link>
                               </li>
                             </ul>
@@ -227,23 +220,60 @@ export const Header = (): JSX.Element => {
                             <ul className="nav-mobilgs1">
                               <li>
                                 <Link to="/about-us" className="page-scroll">
-                                  <span className="itemline-m">About Us</span>
+                                  <span className="itemline-m text-center w-full">
+                                    About Us
+                                  </span>
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/sales" className="page-scroll">
-                                  <span className="itemline-m">Sales</span>
+                                  <span className="itemline-m text-center w-full">
+                                    Sales
+                                  </span>
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/packages" className="page-scroll">
-                                  <span className="itemline-m">Packages</span>
+                                  <span className="itemline-m text-center w-full">
+                                    Packages
+                                  </span>
                                 </Link>
                               </li>
                               <li>
                                 <Link to="/support" className="page-scroll">
-                                  <span className="itemline-m">Support</span>
+                                  <span className="itemline-m text-center w-full">
+                                    Support
+                                  </span>
                                 </Link>
+                              </li>
+                              <li>
+                                <ul className="flex items-center justify-center gap-10 py-8">
+                                  <li>
+                                    <Link to="login">
+                                      <h4>
+                                        <span className="fa fa-user icon_ih text-main"></span>
+                                      </h4>
+                                    </Link>
+                                  </li>
+                                  <li>
+                                    <Link to="" onClick={handleShow}>
+                                      <h4 className="content_relative">
+                                        <span className="fa fa-shopping-cart icon_ih text-main"></span>
+                                        <span className="contador_num">11</span>
+                                      </h4>
+                                    </Link>
+                                  </li>
+                                  <li>
+                                    <Link
+                                      to="https://api.whatsapp.com/send?phone=51999999999"
+                                      target="_blank"
+                                    >
+                                      <h4>
+                                        <span className="fa fa-whatsapp icon_ih text-main"></span>
+                                      </h4>
+                                    </Link>
+                                  </li>
+                                </ul>
                               </li>
                             </ul>
                           </nav>
@@ -261,18 +291,10 @@ export const Header = (): JSX.Element => {
         </div>
         <Modal show={show} onHide={handleClose} className="modal_carrito">
           <Modal.Header>
-            <div className="content_title_carrrito">
+            <div className="flex items-center justify-left gap-5">
               <img src={icono} alt="" width="80" />
-              <h5
-                className="modal-title"
-                id="exampleModalLabel"
-                style={{
-                  top: '10px',
-                  left: '-33px',
-                  position: 'relative'
-                }}
-              >
-                Cart
+              <h5 className="modal-title" id="exampleModalLabel">
+                Carrito
               </h5>
             </div>
             <button
@@ -285,84 +307,105 @@ export const Header = (): JSX.Element => {
               <span aria-hidden="true">&times;</span>
             </button>
           </Modal.Header>
-          <Modal.Body>
-            {/* {
-                  cart.length === 0
-                    ? <div className="no-products">
-                      <h2>You have not added any products 😟</h2>
+          <Modal.Body className="modal_boy_scroll">
+            {cart.length === 0
+              ? (
+              <div className="no-products">
+                <h2>No has añadido ningun producto 😟</h2>
+              </div>
+                )
+              : (
+                  cart.map((producto) => (
+                <div className="main-product_carrito" key={producto.id}>
+                  <div className="img-product_carrito">
+                    <img
+                      src={`${Global.urlImages}/productos/${producto.imagen1}`}
+                      alt=""
+                      width="100%"
+                    />
                   </div>
-                    : cart.map((producto) => (
-                    <div className="main-product_carrito" key={producto.id}>
-                        <div className="img-product_carrito">
-                          {
-                            producto.color === 'otros'
-                              ? <img src={`${Global.urlImages}/otros/${producto.imagen}`} alt="" width="100%"/>
-                              : <img src={`${Global.urlImages}/productos/${producto.imagen}`} alt="" width="100%"/>
-                          }
-                        </div>
-                        <div className="info-product_carrito">
-                            <div className="title-product_carrito" >
-                            <h4 >{producto.nombre}</h4>
-                            </div>
-                            <div className="texto-product_carrito">
-                                <div className="desc_carrito">
-                                    <div className="title-desc" style={{ textAlign: 'center' }}>
-                                        <h5>Precio</h5>
-                                    </div>
-                                    <div className="data_desc">
-                                        <p>$ <span>{producto.precio}</span></p>
-                                    </div>
-                                </div>
-                                <div className="desc_carrito">
-                                    <div className="title-desc">
-                                        <h5>Cantidad</h5>
-                                    </div>
-                                    <div className="data_desc" style={{ justifyContent: 'space-between' }}>
-                                        <FaMinus onClick={() => { decreaseItemQuantity(producto.id, producto.color, producto.precio, producto.imagen) }}/>
-                                        <p>{producto.quantity}</p>
-                                        <FaPlus onClick={() => { increaseItemQuantity(producto.id, producto.color, producto.precio, producto.imagen) }}/>
-                                    </div>
-                                </div>
-                                <div className="desc_carrito">
-                                    <div className="title-desc subtotal-title__carrito">
-                                        <h5>Subtotal</h5>
-                                    </div>
-                                    <div className="data_desc subtotal-title__carrito" >
-                                        <p>$ <span>{calculateItemSubtotal(producto.precio, producto.quantity)}</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="btn-eliminar_carrito">
-                        <button onClick={() => { removeItemFromCart(producto.id, producto.color, producto.precio, producto.imagen) }}><BsFillTrashFill/></button>
-                        </div>
+                  <div className="info-product_carrito">
+                    <div className="title-product_carrito">
+                      <h4>{producto.nombre}</h4>
                     </div>
-                    ))
+                    <div className="texto-product_carrito">
+                      <div className="desc_carrito">
+                        <div
+                          className="title-desc"
+                          style={{ textAlign: 'center' }}
+                        >
+                          <h5>Precio</h5>
+                        </div>
+                        <div className="data_desc">
+                          <p>
+                            S/. <span>{producto.precio}</span>
+                          </p>
+                        </div>
+                      </div>
+                      <div className="desc_carrito">
+                        <div className="title-desc">
+                          <h5>Cantidad</h5>
+                        </div>
+                        <div
+                          className="data_desc"
+                          style={{ justifyContent: 'space-between' }}
+                        >
+                          <DecrementProducto producto={producto} />
+                          <p>{producto.cantidad}</p>
+                          <IncrementProducto producto={producto} />
+                        </div>
+                      </div>
+                      <div className="desc_carrito">
+                        <div className="title-desc subtotal-title__carrito">
+                          <h5>Subtotal</h5>
+                        </div>
+                        <div className="data_desc subtotal-title__carrito">
+                          <Subtotal
+                            precio={producto.precio}
+                            contador={producto.cantidad}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                }
-                <div className="total-products">
-                    <p><span>Total: </span>  <span className='price_total'>$. {calculateTotal(cart)}</span></p>
-                </div> */}
+                  <div className="btn-eliminar_carrito">
+                    <RemoveItem producto={producto} />
+                  </div>
+                </div>
+                  ))
+                )}
           </Modal.Body>
-          <Modal.Footer>
-            <button
-              type="button"
-              className="btn-close-m btn-m"
-              data-dismiss="modal"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn-ir btn-m"
-              onClick={() => {
-                navigate('/cart')
-              }}
-            >
-              Continue
-            </button>
+          <Modal.Footer className="flex flex-col">
+            <div className="total-products">
+              <p>
+                <span>Total: </span>
+                <Total />
+              </p>
+            </div>
+            <div>
+              <button
+                type="button"
+                className="btn-close-m btn-m"
+                data-dismiss="modal"
+                onClick={handleClose}
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                className="btn-ir btn-m"
+                onClick={() => {
+                  const handleOnClick = (): void => {
+                    handleClose()
+                    navigate('/carrito')
+                  }
+                  handleOnClick()
+                }}
+              >
+                Continuar
+              </button>
+            </div>
           </Modal.Footer>
         </Modal>
       </header>

@@ -6,9 +6,8 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react'
-import { Global } from '../helper/Global'
-import axios from 'axios'
 import { type UserSchema } from './UserSchema'
+import { type carrito } from '../components/shared/Interfaces'
 
 export interface AuthContextValue {
   auth: typeof UserSchema
@@ -19,40 +18,37 @@ export interface AuthContextValue {
   setTitle: Dispatch<SetStateAction<string>>
   loadingComponents: boolean
   setLoadingComponents: Dispatch<SetStateAction<boolean>>
+  cart: carrito[]
+  setCart: Dispatch<SetStateAction<carrito[]>>
 }
 
-const AuthContext = createContext<AuthContextValue | null >(null)
+const AuthContext = createContext<AuthContextValue | null>(null)
 
-export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
-  const [auth, setAuth] = useState<typeof UserSchema>({ id: '', name: '', email: '', idRol: null })
+export const AuthProvider = ({
+  children
+}: {
+  children: ReactNode
+}): JSX.Element => {
+  const [auth, setAuth] = useState<typeof UserSchema>({
+    id: '',
+    name: '',
+    email: '',
+    idRol: null
+  })
   const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
-  const [loadingComponents, setLoadingComponents] = useState(false)
+  const [loadingComponents, setLoadingComponents] = useState(true)
+  const [cart, setCart] = useState<carrito[]>([])
 
   useEffect(() => {
-    authUser()
-  }, [])
-
-  const authUser = async (): Promise<false | undefined> => {
-    // SACAR DATOS DEL USUARIO IDENTIFICADO DEL LOCALSTORAGE
-    const token = localStorage.getItem('token')
-    const user = localStorage.getItem('user')
-
-    // COMPROBRAR SI TENGO EL TOKEN Y EL USER
-    if (!token || !user) {
-      setLoading(false)
-      return false
+    // Recuperar el carrito del almacenamiento local cuando la página se cargue
+    const storedCart = localStorage.getItem('cart')
+    if (storedCart) {
+      const parsedCart = JSON.parse(storedCart)
+      setCart(parsedCart)
     }
-
-    const respuesta = await axios.get(`${Global.url}/user-profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    // SETEAR LOS DATOS
-    setAuth(respuesta.data.user)
-    setLoading(false)
-  }
+    setLoadingComponents(false)
+  }, [])
 
   return (
     <AuthContext.Provider
@@ -64,7 +60,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         title,
         setTitle,
         loadingComponents,
-        setLoadingComponents
+        setLoadingComponents,
+        cart,
+        setCart
       }}
     >
       {children}
