@@ -8,6 +8,15 @@ import c4 from './../../assets/public/img/modelos/c4.jpg'
 import c5 from './../../assets/public/img/modelos/c5.jpg'
 import c6 from './../../assets/public/img/modelos/c6.jpg'
 import exportandonline from './../../assets/public/img/iconos/logos-peru.svg'
+import s1 from './../../assets/public/img/servicios/1.jpg'
+import s2 from './../../assets/public/img/servicios/2.jpg'
+import s3 from './../../assets/public/img/servicios/3.jpg'
+import icon1 from './../../assets/public/img/iconos/cart-shop.svg'
+import icon2 from './../../assets/public/img/iconos/form.svg'
+import icon3 from './../../assets/public/img/iconos/check.svg'
+import vacio from './../../assets/public/img/iconos/shopping-bag.png'
+import visa from './../../assets/public/img/iconos/visa.jpg'
+import coti from './../../assets/public/img/iconos/voucher1.jpg'
 
 export {
   logo,
@@ -19,5 +28,14 @@ export {
   c4,
   c5,
   c6,
+  s1,
+  s2,
+  s3,
+  icon1,
+  icon2,
+  icon3,
+  vacio,
+  visa,
+  coti,
   exportandonline
 }

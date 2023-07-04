@@ -1,4 +1,9 @@
 @use './settings' as v;
+
+html{
+    scroll-behavior: smooth;
+}
+
 .loading-success{
     // width: 100vw;
     height: 100vh;
@@ -15,8 +20,8 @@
         position: relative;
 
         img{
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             margin: auto;
             object-fit: contain;
         }
@@ -28,9 +33,9 @@
             animation: load3 1.4s infinite linear;
 
             &:before {
-                width: 40px;
-                height: 40px;
-                background: rgb(229, 178, 83);
+                width: 30px;
+                height: 30px;
+                background: #FF0F29;
                 border-radius: 65% 0;
                 position: absolute;
                 top: -40px;

@@ -1,4 +1,13 @@
-export interface configuracionValues {
+export interface carrito {
+  id: number | null
+  nombre: string
+  cantidad: number | null
+  precio: number | null
+  imagen1: string
+}
+
+export interface ConfiguracionValues {
+  id: number | null
   telefono: string
   celular1: string
   celular2: string
@@ -9,7 +18,7 @@ export interface configuracionValues {
   direccion: string
   facebook: string
   instagram: string
-  twiter: string
+  twitter: string
   linkedin: string
   youtube: string
   whatsapp: string
@@ -155,9 +164,15 @@ export interface arrayValues {
 export interface productosValues {
   id: number
   nombre: string
+  id_categoria: string
   categoria: string
+  descripcion: string
   precio: number
+  cantidad: number
+  oferta: number
   imagen1: string
+  imagen2: string
+  imagen3: string
   created_at: string | null
   updated_at: string | null
 }

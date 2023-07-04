@@ -79,7 +79,8 @@ a:hover, a:active, a:focus {text-decoration: none;}
     background-repeat: no-repeat;
 
     background-size: 100% 100%;
-
+    
+    z-index: 1;
 }
 
 .fot-bground1:before{
@@ -93,6 +94,8 @@ a:hover, a:active, a:focus {text-decoration: none;}
     background: rgba(0, 0, 0, 0.58);
 
     width: 100%;
+
+    z-index: -1;
 
 }
 
@@ -296,6 +299,7 @@ a:hover, a:active, a:focus {text-decoration: none;}
 
     }
 
+   
 }
 
 .contact_us .lst-info>li{
@@ -3035,7 +3039,7 @@ nav.navbar.bootsnav .navbar-toggle {
 
     padding-top: 80px;
 
-    padding-bottom: 50px;
+    padding-bottom: 80px;
 
 }
 
@@ -4343,21 +4347,6 @@ p .progress-linear {
 
 }
 
-@media(min-width: 588px) and (max-width: 991px){
-
-    .enlaces ul{
-
-        display: flex;
-
-    }
-
-    .enlaces li{
-
-        width: 25%;
-
-    }
-
-}
 
 /*====================>PIERRE 26/10/17<====================*/
 
@@ -7155,6 +7144,9 @@ p .progress-linear {
 
     appearance: none;
 
+    max-width: 50px;
+    margin: 0 10px 20px 0;
+
 }
 
 
@@ -9876,7 +9868,6 @@ p .progress-linear {
     font-size: 14px;
     font-weight: 700;
     line-height: 1;
-    padding: 18px 10px 17px;
     text-align: center;
     text-transform: uppercase;
     text-transform: uppercase;
