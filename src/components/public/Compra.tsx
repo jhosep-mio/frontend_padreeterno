@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { icon1, icon2, icon3, visa, coti, vacio } from '../shared/images'
+import { icon1, icon2, icon3, coti, vacio } from '../shared/images'
 import { SchemaCompras } from '../shared/Schemas'
 import { Errors } from '../shared/Errors'
 import { Total } from '../shared/carrito/Total'
@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import { Global } from '../../helper/Global'
 import { Subtotal } from '../shared/carrito/Subtotal'
 import Loading from '../shared/Loading'
+import { ButtonShop } from '../shared/mercadoPago/ButtonShop'
 
 const Compra = (): JSX.Element => {
   const procederCompra = (): void => {}
@@ -26,14 +27,12 @@ const Compra = (): JSX.Element => {
       onSubmit: procederCompra
     })
 
-  // Reemplaza los valores entre corchetes con tu información
-  const mensaje = encodeURIComponent('¡Hola! Aquí está mi carrito de compras:')
+  //   const mensaje = encodeURIComponent('¡Hola! Aquí está mi carrito de compras:')
 
-  // Construye el enlace de WhatsApp con el mensaje y los números de teléfono
-  const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`
+  //   const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`
 
   // Abre el enlace en una nueva pestaña del navegador
-  window.open(enlaceWhatsApp, '_blank')
+  //   window.open(enlaceWhatsApp, '_blank')
 
   return (
     <>
@@ -416,10 +415,7 @@ const Compra = (): JSX.Element => {
                   </div>
 
                   <div className="mycart-body2">
-                    <button className="countarget-img envioFormulario pagoCulqui">
-                      <img src={visa} />
-                      <span className="countarget-box">Pague con Tarjeta</span>
-                    </button>
+                    <ButtonShop/>
 
                     <button className="countarget-img envioFormulario pagotransfer">
                       <img src={coti} title="Voucher" />
