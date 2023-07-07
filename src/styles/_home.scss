@@ -32,6 +32,7 @@
     font-family: auto;
     font-size: medium;
 }
+
 .modal_carrito{
     opacity: 1 !important;
     height: 100% !important;
@@ -124,6 +125,22 @@
                 color: #fff;
             }
         }
+    }
+}
+
+@media (max-width: 576px) {
+    .modal_carrito {
+        width: 100% !important;
+
+        & .modal-content {
+            padding: 0;
+
+            & .modal-body {
+                margin-top: 10px;
+                padding: 0 10px;
+            }
+        }
+
     }
 }
 

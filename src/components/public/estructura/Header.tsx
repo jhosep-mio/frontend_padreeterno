@@ -11,16 +11,28 @@ import { IncrementProducto } from '../../shared/carrito/IncrementProducto'
 import { Subtotal } from '../../shared/carrito/Subtotal'
 import { RemoveItem } from '../../shared/carrito/RemoveItem'
 import { Total } from '../../shared/carrito/Total'
+import axios from 'axios'
 export const Header = (): JSX.Element => {
   const [abrirModal, setAbrirModal] = useState(false)
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
+  const [configuracion, setConfiguracion] = useState<any>({})
+
   const handleClose = (): void => {
     setShow(false)
   }
   const handleShow = (): void => {
     setShow(true)
   }
+
+  const getConfiguracion = async (): Promise<void> => {
+    const request = await axios.get(`${Global.url}/oneConfi/1`)
+    setConfiguracion(request.data)
+  }
+
+  useEffect(() => {
+    getConfiguracion()
+  }, [])
   const { cart } = useAuth()
 
   useEffect(() => {
@@ -41,22 +53,32 @@ export const Header = (): JSX.Element => {
     <>
       <header>
         <div className="ambosmenu">
-          <div className="bg-gray-100 w-full py-5 z-[9999999]">
-            <div className="w-[80%] flex flex-row justify-between mx-auto">
+          <div className="bg-gray-100 w-full py-5 z-[9999999] overflow-hidden">
+            <div className="w-[80%] flex flex-row justify-between mx-auto top_pc">
               <div className="flex items-center gap-10">
                 <span className="flex items-center text-xl text-black">
-                  <IoCall className="text-main" /> (01) 4792367
+                  <IoCall className="text-main " /> (01){' '}
+                  {configuracion.telefono}
                 </span>
-                <span className="md:flex items-center text-xl text-black">
+                <span className=" md:flex items-center text-xl text-black">
                   {' '}
-                  <IoCall className="text-main" /> (+51) 994181726
+                  <IoCall className="text-main " /> (+51){' '}
+                  {configuracion.celular1}
                 </span>
               </div>
               <div>
                 <span className="flex items-center text-xl text-black">
-                  7 Días a la Semana desde 9:00 am hasta 7:00 pm
+                  {configuracion.horario1} -- {configuracion.horario2}
                 </span>
               </div>
+            </div>
+            <div className="flex top_movil w-[200%]">
+              <span className="flex items-center text-xl text-black">
+                <IoCall className="text-main " /> (+51) {configuracion.celular1}
+              </span>
+              <span className="inline-block items-center text-xl text-black">
+                {configuracion.horario1} -- {configuracion.horario2}
+              </span>
             </div>
           </div>
           <div className="eonav-cntfluid">
@@ -108,13 +130,6 @@ export const Header = (): JSX.Element => {
                   </ul>
                   <ul className="nav-Listright">
                     <li>
-                      <Link to="login">
-                        <h4>
-                          <span className="fa fa-user icon_ih"></span>
-                        </h4>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="#" onClick={handleShow}>
                         <h4 className="content_relative">
                           <span className="fa fa-shopping-cart icon_ih"></span>
@@ -124,7 +139,8 @@ export const Header = (): JSX.Element => {
                     </li>
                     <li>
                       <Link
-                        to="https://api.whatsapp.com/send?phone=51999999999"
+                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                        to={`https://api.whatsapp.com/send?phone=51${configuracion.celular1}`}
                         target="_blank"
                       >
                         <h4>
@@ -219,42 +235,55 @@ export const Header = (): JSX.Element => {
                           <nav>
                             <ul className="nav-mobilgs1">
                               <li>
-                                <Link to="/about-us" className="page-scroll">
+                                <Link
+                                  to="/"
+                                  className="page-scroll"
+                                  onClick={() => {
+                                    setAbrirModal(false)
+                                  }}
+                                >
                                   <span className="itemline-m text-center w-full">
-                                    About Us
+                                    Inicio
                                   </span>
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/sales" className="page-scroll">
+                                <Link
+                                  to="/tienda"
+                                  className="page-scroll"
+                                  onClick={() => {
+                                    setAbrirModal(false)
+                                  }}
+                                >
                                   <span className="itemline-m text-center w-full">
-                                    Sales
+                                    Tienda
                                   </span>
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/packages" className="page-scroll">
+                                <Link
+                                  to="/servicios"
+                                  className="page-scroll"
+                                  onClick={() => {
+                                    setAbrirModal(false)
+                                  }}
+                                >
                                   <span className="itemline-m text-center w-full">
-                                    Packages
+                                    Servicios
                                   </span>
                                 </Link>
                               </li>
                               <li>
-                                <Link to="/support" className="page-scroll">
+                                <Link to="/contacto" className="page-scroll" onClick={() => {
+                                  setAbrirModal(false)
+                                }}>
                                   <span className="itemline-m text-center w-full">
-                                    Support
+                                    Contacto
                                   </span>
                                 </Link>
                               </li>
                               <li>
                                 <ul className="flex items-center justify-center gap-10 py-8">
-                                  <li>
-                                    <Link to="login">
-                                      <h4>
-                                        <span className="fa fa-user icon_ih text-main"></span>
-                                      </h4>
-                                    </Link>
-                                  </li>
                                   <li>
                                     <Link to="" onClick={handleShow}>
                                       <h4 className="content_relative">

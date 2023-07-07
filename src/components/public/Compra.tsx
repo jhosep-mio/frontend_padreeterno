@@ -105,8 +105,8 @@ const Compra = (): JSX.Element => {
         //   }
         // },
         back_urls: {
-          success: 'http://127.0.0.1:5173/success-pago',
-          failure: 'http://127.0.0.1:5173/error-pago'
+          success: 'http://localhost:5173/success-pago',
+          failure: 'http://localhost:5173/error-pago'
         },
         auto_return: 'approved'
       }
