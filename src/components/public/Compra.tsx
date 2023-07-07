@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { icon1, icon2, icon3, coti, vacio } from '../shared/images'
+import { icon1, icon2, icon3, coti, vacio, visa } from '../shared/images'
 import { SchemaCompras } from '../shared/Schemas'
 import { Errors } from '../shared/Errors'
 import { Total } from '../shared/carrito/Total'
@@ -7,32 +7,159 @@ import useAuth from '../../hooks/useAuth'
 import { Global } from '../../helper/Global'
 import { Subtotal } from '../shared/carrito/Subtotal'
 import Loading from '../shared/Loading'
-import { ButtonShop } from '../shared/mercadoPago/ButtonShop'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Wallet, initMercadoPago } from '@mercadopago/sdk-react'
+import Swal from 'sweetalert2'
+import CryptoJS from 'crypto-js'
 
 const Compra = (): JSX.Element => {
-  const procederCompra = (): void => {}
   const { loadingComponents, cart } = useAuth()
+  const [preferenceId, setPreferenceId] = useState('')
+  const [customization, setCustomization] = useState<any>(null)
+  const [validation, setValidation] = useState<boolean>(false)
+  const encryptionKey = 'qwerasd159'
+  // const [delivery, setDelivery] = useState<number | null>(null)
 
-  const { handleSubmit, handleChange, errors, values, touched, handleBlur } =
-    useFormik({
-      initialValues: {
-        nombre: '',
-        apellido: '',
-        celular1: '',
-        celular2: '',
-        email: '',
-        comentario: ''
-      },
-      validationSchema: SchemaCompras,
-      onSubmit: procederCompra
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    // Inicializa Mercado Pago con tu clave pública
+    initMercadoPago('TEST-866522c4-294c-4ec1-928d-2f6ccaba880e', {
+      locale: 'es-PE'
     })
 
-  //   const mensaje = encodeURIComponent('¡Hola! Aquí está mi carrito de compras:')
+    const walletCustomization = {
+      texts: {
+        action: 'pay',
+        valueProp: 'security_safety'
+      }
+    }
 
-  //   const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`
+    setCustomization(walletCustomization)
+  }, [])
 
-  // Abre el enlace en una nueva pestaña del navegador
-  //   window.open(enlaceWhatsApp, '_blank')
+  function calculateTotal (delivery: number): string {
+    let total = 0
+    for (let i = 0; i < cart.length; i++) {
+      const item = cart[i]
+      if (item.precio !== null && item.cantidad) {
+        const subtotal = item.precio * item.cantidad
+        total += subtotal
+      }
+    }
+    total = total + delivery
+    return total.toFixed(2) // Redondeamos a dos decimales
+  }
+
+  const handleClickPagar = async (): Promise<void> => {
+    setValidation(true)
+    const dataArray = []
+    const dataObject = {
+      id_transaccion: preferenceId,
+      nombres: values.nombre,
+      apellidos: values.apellido,
+      email: values.email,
+      celular: values.celular1,
+      comentario: values.comentario,
+      delivery: 10,
+      cart,
+      total: calculateTotal(10)
+    }
+    dataArray.push(dataObject)
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(dataArray), encryptionKey).toString()
+    localStorage.setItem('data', encryptedData)
+
+    try {
+      const preferenceData = {
+        items: cart.map((producto) => ({
+          title: producto.nombre,
+          unit_price:
+            producto.precio !== null ? parseFloat(String(producto.precio)) : 0,
+          quantity: producto.cantidad,
+          description: 'Descripción del Item',
+          picture_url: `${Global.urlImages}/productos/${producto.imagen1}`
+        })),
+        shipments: {
+          cost: 10,
+          mode: 'not_specified'
+        },
+        payment_methods: {
+          installments: 1,
+          excluded_payment_types: [
+            {
+              id: 'ticket'
+            },
+            {
+              id: 'atm'
+            }
+          ]
+        },
+        statement_descriptor: 'Padre eterno',
+        // payer: {
+        //   name: values.nombre,
+        //   surname: values.apellido,
+        //   email: values.email,
+        //   phone: {
+        //     area_code: '51',
+        //     number: values.celular1
+        //   }
+        // },
+        back_urls: {
+          success: 'http://127.0.0.1:5173/success-pago',
+          failure: 'http://127.0.0.1:5173/error-pago'
+        },
+        auto_return: 'approved'
+      }
+
+      // Envía la preferencia de pago a la API de Mercado Pago para generar el ID de la preferencia
+      const response = await axios.post(
+        'https://api.mercadopago.com/checkout/preferences',
+        preferenceData,
+        {
+          headers: {
+            Authorization:
+              'Bearer TEST-1103294386763254-070518-dc0ef1e2d894ce6b2c4f58cdd988a282-485171551',
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      const preferenceId: string = response.data.id
+      setPreferenceId(preferenceId)
+    } catch (error) {
+      console.error('Error al generar la preferencia de pago:', error)
+    }
+  }
+
+  const {
+    handleSubmit,
+    handleChange,
+    errors,
+    values,
+    touched,
+    handleBlur,
+    isSubmitting
+  } = useFormik({
+    initialValues: {
+      nombre: '',
+      apellido: '',
+      celular1: '',
+      email: '',
+      comentario: ''
+    },
+    validationSchema: SchemaCompras,
+    onSubmit: handleClickPagar
+  })
+
+  useEffect(() => {
+    if (errors && isSubmitting) {
+      const firstErrorKey = Object.keys(errors)[0]
+      const firstErrorElement = document.getElementsByName(firstErrorKey)[0]
+      if (firstErrorElement) {
+        firstErrorElement.focus()
+        Swal.fire('Complete todos los campos', '', 'error')
+      }
+    }
+  }, [touched, errors, isSubmitting])
 
   return (
     <>
@@ -86,7 +213,7 @@ const Compra = (): JSX.Element => {
                   </div>
 
                   <div className="box-pasform i-contacregistro">
-                    <form id="frm_pago" onSubmit={handleSubmit}>
+                    <form id="frm_pago">
                       <span className="respuesta"></span>
 
                       <div className="row">
@@ -99,6 +226,7 @@ const Compra = (): JSX.Element => {
                             placeholder="Nombres"
                             value={values.nombre}
                             onChange={handleChange}
+                            disabled={!!validation}
                             onBlur={handleBlur}
                           />
                           <Errors
@@ -116,6 +244,7 @@ const Compra = (): JSX.Element => {
                             placeholder="Apellidos"
                             value={values.apellido}
                             onChange={handleChange}
+                            disabled={!!validation}
                             onBlur={handleBlur}
                           />
                           <Errors
@@ -133,28 +262,12 @@ const Compra = (): JSX.Element => {
                             placeholder="Celular"
                             value={values.celular1}
                             onChange={handleChange}
+                            disabled={!!validation}
                             onBlur={handleBlur}
                           />
                           <Errors
                             errors={errors.celular1}
                             touched={touched.celular1}
-                          />
-                        </div>
-
-                        <div className="form-group col-sm-12 col-md-12">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="celularUsuario"
-                            name="celular2"
-                            placeholder="Teléfono (Opcional)"
-                            value={values.celular2}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          <Errors
-                            errors={errors.celular2}
-                            touched={touched.celular2}
                           />
                         </div>
 
@@ -168,6 +281,7 @@ const Compra = (): JSX.Element => {
                             value={values.email}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            disabled={!!validation}
                           />
                           <Errors
                             errors={errors.email}
@@ -179,7 +293,7 @@ const Compra = (): JSX.Element => {
                           <textarea
                             className="form-control"
                             id="commentarioUsuario"
-                            name="comment"
+                            name="comentario"
                             placeholder="Déjanos tu comentario..."
                             value={values.comentario}
                             onChange={handleChange}
@@ -415,9 +529,27 @@ const Compra = (): JSX.Element => {
                   </div>
 
                   <div className="mycart-body2">
-                    <ButtonShop/>
+                    <button
+                      type="submit"
+                      className="countarget-img envioFormulario pagoCulqui outline-none text-center flex items-center justify-center"
+                      onClick={() => {
+                        handleSubmit()
+                      }}
+                    >
+                      <img src={visa} />
+                      <span className="countarget-box">Pagar con tarjeta</span>
+                    </button>
+                    {preferenceId && (
+                      <Wallet
+                        initialization={{
+                          preferenceId,
+                          redirectMode: 'self'
+                        }}
+                        customization={customization}
+                      />
+                    )}
 
-                    <button className="countarget-img envioFormulario pagotransfer">
+                    <button className="countarget-img envioFormulario pagotransfer flex items-center justify-center">
                       <img src={coti} title="Voucher" />
                       <span className="countarget-box">
                         Cotización por Whatsapp

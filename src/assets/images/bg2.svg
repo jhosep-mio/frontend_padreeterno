@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="500" height="1080" preserveAspectRatio="none" viewBox="0 0 500 1080">
+    <g clip-path="url(&quot;#SvgjsClipPath1098&quot;)" fill="none">
+        <circle r="83.335" cx="-56.64" cy="59" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="83.335" cx="340.94" cy="335.79" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="83.335" cx="683.16" cy="736.49" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="59.19" cx="106.21" cy="90.23" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="107.435" cx="336.52" cy="137.63" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="77.28" cx="107.01" cy="701.92" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="117.44" cx="126.13" cy="412" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="96.91" cx="116.67" cy="835.87" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="95.165" cx="280.34" cy="979.91" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+        <circle r="131.485" cx="214.3" cy="537.02" stroke="#7136a3" stroke-opacity="0.25" stroke-width="2"></circle>
+    </g>
+    <defs>
+        <clipPath id="SvgjsClipPath1098">
+            <rect width="500" height="1080" x="0" y="0"></rect>
+        </clipPath>
+    </defs>
+</svg>

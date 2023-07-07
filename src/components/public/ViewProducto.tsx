@@ -63,7 +63,6 @@ const ViewProducto = (): JSX.Element => {
   const getOneData = async (): Promise<void> => {
     const request = await axios.get(`${Global.url}/oneProducto/${id ?? ''}`)
     const responseData: productosValues = request.data // Replace "YourResponseType" with the actual type of the response data
-
     setProducto(responseData)
 
     if (responseData.id_categoria) {
