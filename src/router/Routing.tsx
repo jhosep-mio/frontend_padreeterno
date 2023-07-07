@@ -11,6 +11,8 @@ import Servicios from '../components/public/Servicios'
 import Login from '../components/public/Login'
 import Registro from '../components/public/Registro'
 import Compra from '../components/public/Compra'
+import { SuccesPago } from '../components/public/SuccesPago'
+import { ErrorPago } from '../components/public/ErrorPago'
 
 export const Routing = (): JSX.Element => {
   return (
@@ -29,6 +31,8 @@ export const Routing = (): JSX.Element => {
             <Route path='login' element={<Login/>}/>
             <Route path='registro' element={<Registro/>}/>
             <Route path='compra' element={<Compra/>}/>
+            <Route path='success-pago' element={<SuccesPago/>}/>
+            <Route path='error-pago' element={<ErrorPago/>}/>
           </Route>
         </Routes>
       </AuthProvider>
