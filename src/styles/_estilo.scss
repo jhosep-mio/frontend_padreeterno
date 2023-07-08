@@ -97,6 +97,10 @@ a:hover, a:active, a:focus {text-decoration: none;}
 
 }*/
 
+.top_movil{
+    display: none;
+}
+
 /*----------------------------------FOOTER--------------------------------*/
 
 .fot-bground1{
@@ -261,7 +265,7 @@ a:hover, a:active, a:focus {text-decoration: none;}
 
     background: v.$main;
 
-    top: 55px;
+    top: 35px;
 
     margin-top: 10px;
 
@@ -319,12 +323,34 @@ a:hover, a:active, a:focus {text-decoration: none;}
 
     }
 
+    .info h4:before,.enlaces h4:before, .contact_us h4:before{
+
+       display: none !important;
+    
+    }
+
     .info ul, .enlaces ul, .contact_us ul {
 
         margin-bottom: 0;
 
     }
 
+    .top_pc{
+        display: none;
+    }
+
+    .top_movil{
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        animation: translate 20s linear infinite;
+
+        @keyframes translate{
+            from{ transform: translateX(50%); }
+            to{ transform: translateX(-100%);}
+        }
+    }
 }
 
 .contact_us .lst-info>li{
