@@ -27,7 +27,6 @@ export const Index = (): JSX.Element => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setLoadingComponents(true)
     Promise.all([
       getData('allBanners', setBanners),
       getData('productosWhereFavorites', setFavorites),

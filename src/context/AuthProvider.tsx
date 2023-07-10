@@ -8,6 +8,10 @@ import {
 } from 'react'
 import { type UserSchema } from './UserSchema'
 import { type carrito } from '../components/shared/Interfaces'
+import CryptoJS from 'crypto-js'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { Global } from '../helper/Global'
 
 export interface AuthContextValue {
   auth: typeof UserSchema
@@ -39,6 +43,7 @@ export const AuthProvider = ({
   const [title, setTitle] = useState('')
   const [loadingComponents, setLoadingComponents] = useState(true)
   const [cart, setCart] = useState<carrito[]>([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Recuperar el carrito del almacenamiento local cuando la página se cargue
@@ -47,7 +52,32 @@ export const AuthProvider = ({
       const parsedCart = JSON.parse(storedCart)
       setCart(parsedCart)
     }
-    setLoadingComponents(false)
+
+    const encryptionKey = 'qwerasd159'
+    const encryptedData = localStorage.getItem('data')
+
+    if (encryptedData && encryptedData != null) {
+      const guardarData = async (): Promise<void> => {
+        const decryptedData = CryptoJS.AES.decrypt(
+          encryptedData,
+          encryptionKey
+        ).toString(CryptoJS.enc.Utf8)
+
+        const values = JSON.parse(decryptedData)
+        const paymentId: string = values[0].id_unique
+
+        const request = await axios.post(
+            `${Global.url}/oneTransaccion/${paymentId}`
+        )
+        if (request.status) {
+          localStorage.removeItem('cart')
+          localStorage.removeItem('data')
+          setCart([])
+          navigate(`/success-pago/${paymentId}`)
+        }
+      }
+      guardarData()
+    }
   }, [])
 
   return (

@@ -11,9 +11,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Wallet, initMercadoPago } from '@mercadopago/sdk-react'
 import Swal from 'sweetalert2'
-import { ErrorsBig } from '../shared/ErrorsBig'
-import { v4 as uuidv4 } from 'uuid'
 import CryptoJS from 'crypto-js'
+import { ErrorsBig } from '../shared/ErrorsBig'
 
 const Compra = (): JSX.Element => {
   const { loadingComponents, cart, setLoadingComponents } = useAuth()
@@ -60,7 +59,6 @@ const Compra = (): JSX.Element => {
     ) {
       setLoading(true)
       setValidation(true)
-      const uniqueId = uuidv4()
       try {
         const preferenceData = {
           items: cart.map((producto) => ({
@@ -97,16 +95,14 @@ const Compra = (): JSX.Element => {
           },
           external_reference: values.comentario,
           back_urls: {
-            success: `127.0.0.1:5173/compra/${String(uniqueId)}`,
-            failure: '127.0.0.1:5173/error-pago'
-          },
-          metadata: {
-            comment: uniqueId
+            success: '127.0.0.1:5174/success-pago',
+            failure: '127.0.0.1:5174/error-pago'
           },
           auto_return: 'approved',
           notification_url: 'https://api.greennutrition.com.pe/api/webhook'
         }
 
+        // Envía la preferencia de pago a la API de Mercado Pago para generar el ID de la preferencia
         const response = await axios.post(
           'https://api.mercadopago.com/checkout/preferences',
           preferenceData,
@@ -121,16 +117,6 @@ const Compra = (): JSX.Element => {
 
         const preferenceId: string = response.data.id
         setPreferenceId(preferenceId)
-        const dataArray = []
-        const dataObject = {
-          id_unique: uniqueId
-        }
-        dataArray.push(dataObject)
-        const encryptedData = CryptoJS.AES.encrypt(
-          JSON.stringify(dataArray),
-          encryptionKey
-        ).toString()
-        localStorage.setItem('data', encryptedData)
       } catch (error) {
         console.error('Error al generar la preferencia de pago:', error)
       }

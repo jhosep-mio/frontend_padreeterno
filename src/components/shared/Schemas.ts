@@ -14,5 +14,7 @@ export const SchemaCompras = Yup.object().shape({
   email: Yup.string()
     .email('Email invalido')
     .required('Este campo es requerido'),
-  comentario: Yup.string()
+  comentario: Yup.string(),
+  despacho: Yup.string().required('Este campo es requerido'),
+  direccion: Yup.string().min(20, 'Sea mas especifico').nullable()
 })

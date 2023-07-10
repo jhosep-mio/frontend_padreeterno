@@ -31,7 +31,7 @@ export const Routing = (): JSX.Element => {
             <Route path='login' element={<Login/>}/>
             <Route path='registro' element={<Registro/>}/>
             <Route path='compra' element={<Compra/>}/>
-            <Route path='success-pago' element={<SuccesPago/>}/>
+            <Route path='success-pago/:ui' element={<SuccesPago/>}/>
             <Route path='error-pago' element={<ErrorPago/>}/>
           </Route>
         </Routes>
