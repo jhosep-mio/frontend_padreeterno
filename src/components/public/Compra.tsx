@@ -95,10 +95,10 @@ const Compra = (): JSX.Element => {
               number: values.celular1
             }
           },
-          external_reference: values.comentario,
+          external_reference: `${values.despacho == '1' ? 'Retiro a domicilio, direccion :' + values.direccion : 'Retiro en tienda'},   ${values.comentario}`,
           back_urls: {
-            success: `127.0.0.1:5173/compra/${String(uniqueId)}`,
-            failure: '127.0.0.1:5173/error-pago'
+            success: `padreeterno.logosperu.com/compra/${String(uniqueId)}`,
+            failure: 'padreeterno.logosperu.com/error-pago'
           },
           metadata: {
             comment: uniqueId

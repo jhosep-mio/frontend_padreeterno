@@ -4,8 +4,13 @@ import axios from 'axios'
 import { Global } from '../../helper/Global'
 import useAuth from '../../hooks/useAuth'
 import Loading from '../shared/Loading'
+import { useFormik } from 'formik'
+import { SchemaContacto } from '../shared/Schemas'
+import Swal from 'sweetalert2'
+import { Errors } from '../shared/Errors'
 
 const Contacto = (): JSX.Element => {
+  const [loadingCorreo, setLoadingCorreo] = useState<boolean>(false)
   const { loadingComponents, setLoadingComponents } = useAuth()
   const [data, setData] = useState<ConfiguracionValues>({
     id: null,
@@ -40,6 +45,53 @@ const Contacto = (): JSX.Element => {
     getData()
     window.scrollTo(0, 0)
   }, [])
+
+  const enviarCorreo = async (): Promise<void> => {
+    setLoadingCorreo(true)
+    const data = new FormData()
+    data.append('nombres', values.nombres)
+    data.append('email', values.email)
+    data.append('celular', values.celular)
+    data.append('asunto', values.asunto)
+    data.append('mensaje', values.mensaje)
+    try {
+      const respuesta = await axios.post(
+        `${Global.url}/enviarCorreo`,
+        data
+      )
+
+      if (respuesta.data.status === 'success') {
+        Swal.fire('Correo enviado', '', 'success')
+        resetForm()
+      } else {
+        Swal.fire('Error al enviar el correo', '', 'error')
+      }
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Error al enviar el correo', '', 'error')
+    }
+    setLoadingCorreo(false)
+  }
+
+  const {
+    handleSubmit,
+    handleChange,
+    errors,
+    values,
+    touched,
+    handleBlur,
+    resetForm
+  } = useFormik({
+    initialValues: {
+      nombres: '',
+      celular: '',
+      email: '',
+      asunto: '',
+      mensaje: ''
+    },
+    validationSchema: SchemaContacto,
+    onSubmit: enviarCorreo
+  })
 
   return (
     <>
@@ -78,36 +130,84 @@ const Contacto = (): JSX.Element => {
                 </p>
               </div>
               <div className="offset-top-30">
-                <form method="post" action="" className="rd-mailform text-left">
+                <form className="rd-mailform text-left" onSubmit={handleSubmit}>
                   <div className="form-group col-md-6">
-                    <label className="titunom text-main">Nombre</label>
-                    <input type="text" name="nombre" className="cajaformu" />
+                    <label className="titunom text-main">Nombres </label>
+                    <input
+                      type="text"
+                      name="nombres"
+                      className="cajaformu"
+                      value={values.nombres}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <Errors errors={errors.nombres} touched={touched.nombres} />
                   </div>
                   <div className="form-group col-md-6">
                     <label className="titunom">Celular o Telefono</label>
-                    <input type="text" name="apellido" className="cajaformu" />
+                    <input
+                      type="text"
+                      name="celular"
+                      className="cajaformu"
+                      value={values.celular}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <Errors errors={errors.celular} touched={touched.celular} />
                   </div>
                   <div className="form-group col-md-6">
                     <label className="titunom">E-mail</label>
-                    <input type="email" name="email" className="cajaformu" />
+                    <input
+                      type="email"
+                      name="email"
+                      className="cajaformu"
+                      value={values.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <Errors errors={errors.email} touched={touched.email} />
                   </div>
                   <div className="form-group col-md-6">
                     <label className="titunom">Asunto</label>
-                    <input type="text" name="telefono" className="cajaformu" />
+                    <input
+                      type="text"
+                      name="asunto"
+                      className="cajaformu"
+                      value={values.asunto}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <Errors errors={errors.asunto} touched={touched.asunto} />
                   </div>
                   <div className="form-group col-md-12">
                     <label className="titunom">Mensaje</label>
                     <textarea
-                      name="message"
+                      name="mensaje"
                       style={{ height: '220px' }}
                       className="cajaformu"
+                      value={values.mensaje}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     ></textarea>
+                    <Errors errors={errors.mensaje} touched={touched.mensaje} />
                   </div>
-                  <div className="col-md-12">
-                    <a type="submit" className="btn_for_all">
-                      Enviar
-                    </a>
-                  </div>
+                  {!loadingCorreo
+                    ? (
+                    <div className="col-md-12">
+                      <input
+                        type="submit"
+                        className="btn_for_all"
+                        value={'Enviar'}
+                      />
+                    </div>
+                      )
+                    : (
+                    <div className="col-md-12">
+                      <a href="#" className="btn_for_all">
+                        Enviando ....
+                      </a>
+                    </div>
+                      )}
                 </form>
               </div>
             </div>
@@ -183,12 +283,8 @@ const Contacto = (): JSX.Element => {
                 </div>
                 <div className="media-body">
                   <h4 className="titulosdatos">Horario de Trabajo:</h4>
-                  <p className="small textodatos">
-                    {data.horario1}
-                  </p>
-                  <p className="small textodatos">
-                    {data.horario2}
-                  </p>
+                  <p className="small textodatos">{data.horario1}</p>
+                  <p className="small textodatos">{data.horario2}</p>
                 </div>
               </div>
             </div>

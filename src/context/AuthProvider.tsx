@@ -69,7 +69,7 @@ export const AuthProvider = ({
         const request = await axios.post(
             `${Global.url}/oneTransaccion/${paymentId}`
         )
-        if (request.status) {
+        if (request.data.length > 0 && request.data[0].status != 'rejected') {
           localStorage.removeItem('cart')
           localStorage.removeItem('data')
           setCart([])
