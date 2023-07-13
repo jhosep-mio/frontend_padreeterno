@@ -265,7 +265,7 @@ const ViewProducto = (): JSX.Element => {
                 <span className="text-5xl text-main mt-14">
                   S/. {producto.precio}
                 </span>
-                <del className="text-3xl">S/. 209</del>
+                <del className="text-3xl">S/. {producto.oferta}</del>
                 <span className="section_product-rigth-contain-detail my-14">
                   {producto.descripcion}
                 </span>
@@ -312,7 +312,10 @@ const ViewProducto = (): JSX.Element => {
             DESCRIPCIÓN
           </h2>
           <div className="border border-gray-200 w-full p-6 max-h-96">
-            <p>hola</p>
+            <div
+              className="descripcion-producto"
+              dangerouslySetInnerHTML={{ __html: producto.descripcion }}
+            ></div>
           </div>
         </section>
       </section>

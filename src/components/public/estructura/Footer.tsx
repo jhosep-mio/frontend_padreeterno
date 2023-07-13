@@ -29,6 +29,20 @@ export const Footer = (): JSX.Element => {
     setConfiguracion(request.data)
   }
 
+  function formatearURL (nombre: string): string {
+    // Eliminar espacios al principio y al final del nombre
+    let url = nombre.trim()
+
+    // Convertir todo el string a minúsculas
+    url = url.toLowerCase()
+
+    // Reemplazar los espacios por guiones
+    url = url.replace(/ /g, '-')
+
+    // Retornar la URL formateada
+    return url
+  }
+
   useEffect(() => {
     getAllCategorias()
     getConfiguracion()
@@ -67,7 +81,9 @@ export const Footer = (): JSX.Element => {
                           className="text-white md:w-full md:text-center lg:text-left"
                         >
                           <Link
-                            to={`/categories/${cate.id}-${cate.nombre}`}
+                           to={`/categorias/${cate.id}-${formatearURL(
+                            cate.nombre
+                          )}`}
                             className="text-white"
                           >
                             {cate.nombre}

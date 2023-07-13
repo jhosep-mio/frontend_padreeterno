@@ -17,6 +17,13 @@ import icon3 from './../../assets/public/img/iconos/check.svg'
 import vacio from './../../assets/public/img/iconos/shopping-bag.png'
 import visa from './../../assets/public/img/iconos/visa.jpg'
 import coti from './../../assets/public/img/iconos/voucher1.jpg'
+import cliente1 from './../../assets/public/img/clientes/1.jpg'
+import cliente2 from './../../assets/public/img/clientes/2.jpg'
+import cliente3 from './../../assets/public/img/clientes/3.png'
+import cliente4 from './../../assets/public/img/clientes/4.png'
+import cliente5 from './../../assets/public/img/clientes/6.jpg'
+import cliente6 from './../../assets/public/img/clientes/7.jpg'
+import cliente7 from './../../assets/public/img/clientes/8.jpg'
 
 export {
   logo,
@@ -37,5 +44,12 @@ export {
   vacio,
   visa,
   coti,
-  exportandonline
+  exportandonline,
+  cliente1,
+  cliente2,
+  cliente3,
+  cliente4,
+  cliente5,
+  cliente6,
+  cliente7
 }

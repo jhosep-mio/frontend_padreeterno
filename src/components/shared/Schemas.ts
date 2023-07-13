@@ -16,7 +16,9 @@ export const SchemaCompras = Yup.object().shape({
     .required('Este campo es requerido'),
   comentario: Yup.string(),
   despacho: Yup.string().required('Este campo es requerido'),
-  direccion: Yup.string().min(20, 'Sea mas especifico').nullable()
+  direccion: Yup.string().min(20, 'Sea mas especifico').nullable(),
+  departamento: Yup.string().nullable(),
+  distrito: Yup.string().nullable()
 })
 
 export const SchemaContacto = Yup.object().shape({

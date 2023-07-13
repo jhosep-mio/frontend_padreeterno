@@ -15,7 +15,7 @@ import {
   type categoriasValues
 } from '../shared/Interfaces'
 import { Link, useNavigate } from 'react-router-dom'
-import { t3 } from '../shared/images'
+import { cliente1, cliente2, cliente3, cliente4, cliente5, cliente6, cliente7, t3 } from '../shared/images'
 import Loading from '../shared/Loading'
 
 export const Index = (): JSX.Element => {
@@ -27,6 +27,7 @@ export const Index = (): JSX.Element => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    setLoadingComponents(true)
     Promise.all([
       getData('allBanners', setBanners),
       getData('productosWhereFavorites', setFavorites),
@@ -57,9 +58,13 @@ export const Index = (): JSX.Element => {
       <section id="slider" className="topsectglobal wow slideInRight">
         <Swiper
           pagination={{ clickable: true }}
-          modules={[Pagination]}
+          modules={[Pagination, Autoplay]}
           className="swp_slider"
           loop={true}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false
+          }}
         >
           {banners.map((banner: bannersValues) => (
             <SwiperSlide key={banner.id}>
@@ -122,7 +127,7 @@ export const Index = (): JSX.Element => {
                   spaceBetween={30}
                   loop={true}
                   autoplay={{
-                    delay: 4500,
+                    delay: 2500,
                     disableOnInteraction: false
                   }}
                   breakpoints={{
@@ -251,9 +256,13 @@ export const Index = (): JSX.Element => {
             <div className="col-md-12">
               <Swiper
                 pagination={true}
-                modules={[Pagination]}
+                modules={[Pagination, Autoplay]}
                 slidesPerView={3}
                 className="oferta"
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false
+                }}
                 breakpoints={{
                   0: {
                     slidesPerView: 1,
@@ -276,7 +285,7 @@ export const Index = (): JSX.Element => {
                 {categorias.map((categoria: categoriasValues) => (
                   <SwiperSlide key={categoria.id} className="py-14">
                     <div className="flowstitle">
-                      <Link to="">
+                      <Link to={`/categorias/${categoria.id}-${formatearURL(categoria.nombre)}`}>
                         <h2>{categoria.nombre}</h2>
                         <p className="flowscuerpo">
                           Envía un obsequio a quien más quieres.
@@ -320,7 +329,7 @@ export const Index = (): JSX.Element => {
                   modules={[Pagination, Autoplay]}
                   loop={true}
                   autoplay={{
-                    delay: 4500,
+                    delay: 3500,
                     disableOnInteraction: false
                   }}
                   breakpoints={{
@@ -457,7 +466,11 @@ export const Index = (): JSX.Element => {
                 pagination={{
                   clickable: true
                 }}
-                modules={[Pagination]}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false
+                }}
+                modules={[Pagination, Autoplay]}
                 className="mySwiper testimoniosss h-full "
               >
                 <SwiperSlide className="py-24">
@@ -531,6 +544,11 @@ export const Index = (): JSX.Element => {
                 slidesPerView={5}
                 spaceBetween={30}
                 loop={true}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false
+                }}
+                  modules={[Pagination, Autoplay]}
                 className="mySwiper clients1 xhm-client1 owl-theme owl-loaded owl-drag"
                 breakpoints={{
                   0: {
@@ -558,7 +576,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente1}
                       />
                     </div>
                   </div>
@@ -569,7 +587,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente2}
                       />
                     </div>
                   </div>
@@ -580,7 +598,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente3}
                       />
                     </div>
                   </div>
@@ -591,7 +609,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente4}
                       />
                     </div>
                   </div>
@@ -602,7 +620,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente5}
                       />
                     </div>
                   </div>
@@ -613,7 +631,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente6}
                       />
                     </div>
                   </div>
@@ -624,18 +642,7 @@ export const Index = (): JSX.Element => {
                       <img
                         loading="lazy"
                         className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
-                      />
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide className="py-24">
-                  <div className="owl-item cloned">
-                    <div>
-                      <img
-                        loading="lazy"
-                        className="img-responsive center-block clietam"
-                        src="https://padreeterno.com/public/img/clientes/7.jpg"
+                        src={cliente7}
                       />
                     </div>
                   </div>

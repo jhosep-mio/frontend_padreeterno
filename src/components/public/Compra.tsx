@@ -14,6 +14,7 @@ import Swal from 'sweetalert2'
 import { ErrorsBig } from '../shared/ErrorsBig'
 import { v4 as uuidv4 } from 'uuid'
 import CryptoJS from 'crypto-js'
+import { TotalDelivery } from '../shared/carrito/TotalDelivery'
 
 const Compra = (): JSX.Element => {
   const { loadingComponents, cart, setLoadingComponents } = useAuth()
@@ -22,12 +23,16 @@ const Compra = (): JSX.Element => {
   const [customization, setCustomization] = useState<any>(null)
   const [validation, setValidation] = useState<boolean>(false)
   const encryptionKey = 'qwerasd159'
+  const [departamentos, setDepartamentos] = useState([])
+  const [distritos, setDistritos] = useState([])
+  const [loadinDistrito, setLoadingDistrito] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     setLoadingComponents(false)
+    getDepartamentos()
     // Inicializa Mercado Pago con tu clave pública
-    initMercadoPago('APP_USR-70382a35-a81c-40e0-afbb-06cd86547301', {
+    initMercadoPago('APP_USR-5fa8de4e-a417-44da-815f-ea88392ea2b8', {
       locale: 'es-PE'
     })
 
@@ -56,12 +61,57 @@ const Compra = (): JSX.Element => {
   const handleClickPagar = async (): Promise<void> => {
     if (
       values.despacho == '2' ||
-      (values.despacho == '1' && values.direccion)
+      (values.despacho == '1' &&
+        values.departamento != '' &&
+        values.distrito != '' &&
+        values.direccion != '')
     ) {
       setLoading(true)
       setValidation(true)
       const uniqueId = uuidv4()
       try {
+        const costoEnvio: number =
+          values.distrito && values.despacho === '1'
+            ? distritos.reduce(
+              (
+                precioEnvio: number,
+                distrito: { id: string, precio: any }
+              ) => {
+                if (distrito.id == values.distrito) {
+                  return parseFloat(distrito.precio)
+                }
+                return precioEnvio
+              },
+              0
+            )
+            : 0
+        const nombreDistrito: string =
+          values.distrito && values.despacho == '1'
+            ? distritos.reduce(
+              (nombre: string, distrito: { id: string, nombre: string }) => {
+                if (distrito.id == values.distrito) {
+                  return distrito.nombre
+                }
+                return nombre
+              },
+              ''
+            )
+            : ''
+
+        const nombreDepartamento: string =
+            departamentos.reduce(
+              (nombre: string, departamento: { id: string, nombre: string }) => {
+                if (departamento.id == values.departamento) {
+                  return departamento.nombre
+                }
+                return nombre
+              },
+              ''
+            )
+
+        console.log(nombreDistrito)
+        console.log(nombreDepartamento)
+
         const preferenceData = {
           items: cart.map((producto) => ({
             id: producto.id,
@@ -95,16 +145,23 @@ const Compra = (): JSX.Element => {
               number: values.celular1
             }
           },
-          external_reference: `${values.despacho == '1' ? 'Retiro a domicilio, direccion :' + values.direccion : 'Retiro en tienda'},   ${values.comentario}`,
+          external_reference: `${
+            values.despacho == '1'
+              ? `Retiro a domicilio, Departamento: ${nombreDepartamento}, Distrito: ${nombreDistrito}  dirección: ${values.direccion}. `
+              : 'Retiro en tienda'
+          },   ${values.comentario}`,
           back_urls: {
-            success: `padreeterno.logosperu.com/compra/${String(uniqueId)}`,
-            failure: 'padreeterno.logosperu.com/error-pago'
+            success: `https://padreeterno.com/success-pago/${String(uniqueId)}`,
+            failure: 'https://padreeterno.com/error-pago'
           },
           metadata: {
             comment: uniqueId
           },
+          shipments: {
+            cost: costoEnvio
+          },
           auto_return: 'approved',
-          notification_url: 'https://api.greennutrition.com.pe/api/webhook'
+          notification_url: 'https://api.padreeterno.com/public/api/webhook'
         }
 
         const response = await axios.post(
@@ -113,7 +170,7 @@ const Compra = (): JSX.Element => {
           {
             headers: {
               Authorization:
-                'Bearer APP_USR-7222992427774592-070812-7dc7d7a9b3ad29414a48145866939ab2-1418619994',
+                'Bearer APP_USR-1350303465211636-071311-10135799088adbf367177ff21e11b31e-400611542',
               'Content-Type': 'application/json'
             }
           }
@@ -136,22 +193,42 @@ const Compra = (): JSX.Element => {
       }
       setLoading(false)
     } else {
-      Swal.fire('Debe colocar su direccion', '', 'warning')
+      Swal.fire(
+        'Debe completar todos los datos del retiro a domicilio',
+        '',
+        'warning'
+      )
     }
   }
 
   function enviarPorWhatsApp (): void {
     // Obtén la información del carrito de compras y formátala
-    const carrit = cart.map((producto) => `Nombre: ${producto.nombre}\nCantidad: ${producto.cantidad != null ? producto.cantidad : 1}\nPrecio: ${producto.precio != null ? producto.precio : 0}\n`).join('\n')
+    const carrit = cart
+      .map(
+        (producto) =>
+          `Nombre: ${producto.nombre}\nCantidad: ${
+            producto.cantidad != null ? producto.cantidad : 1
+          }\nPrecio: ${producto.precio != null ? producto.precio : 0}\n`
+      )
+      .join('\n')
     // Genera el enlace o mensaje de WhatsApp
-    const telefono = '+51960613700' // Número de teléfono al que deseas enviar el mensaje
+    const telefono = '+51994181726' // Número de teléfono al que deseas enviar el mensaje
     const mensaje = `¡Hola! Estoy interesado en comprar los siguientes productos:\n\n${carrit} \n\n TOTAL = ${calculateTotal()}`
 
     // Crea el enlace completo para abrir WhatsApp con el mensaje predefinido
-    const enlaceWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`
+    const enlaceWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(
+      mensaje
+    )}`
 
     // Abre WhatsApp en una nueva ventana o pestaña
     window.open(enlaceWhatsApp)
+  }
+
+  const getDepartamentos = async (): Promise<void> => {
+    setLoadingComponents(true)
+    const request = await axios.get(`${Global.url}/allDepartamentos`)
+    setDepartamentos(request.data)
+    setLoadingComponents(false)
   }
 
   const {
@@ -170,7 +247,9 @@ const Compra = (): JSX.Element => {
       email: '',
       comentario: '',
       despacho: '',
-      direccion: ''
+      direccion: '',
+      departamento: '',
+      distrito: ''
     },
     validationSchema: SchemaCompras,
     onSubmit: handleClickPagar
@@ -186,6 +265,20 @@ const Compra = (): JSX.Element => {
       }
     }
   }, [touched, errors, isSubmitting])
+
+  useEffect(() => {
+    if (values.departamento) {
+      setLoadingDistrito(true)
+      const getDistrito = async (): Promise<void> => {
+        const request = await axios.get(
+          `${Global.url}/allDistritosGroup/${values.departamento}`
+        )
+        setDistritos(request.data)
+      }
+      setLoadingDistrito(false)
+      getDistrito()
+    }
+  }, [values.departamento])
 
   return (
     <>
@@ -343,27 +436,53 @@ const Compra = (): JSX.Element => {
                   </div>
 
                   <div className="mycart-body">
-                    {values.despacho == '1' && (
+                    {values.despacho == '1' && values.distrito
+                      ? (
                       <div className="mycartotal-2">
                         <table className="table no-margin">
                           <thead>
                             <tr className="m-0">
                               <td className="no-paddi1 enforce">
                                 <h5 className="panel-title text-center">
-                                  EL monto a pagar no incluye el delivery
+                                  Precio del delivery: S/.{' '}
+                                  {distritos.map(
+                                    (distrito: { id: string, precio: any }) =>
+                                      distrito.id == values.distrito && (
+                                        <span key={'precio_distrito'}>
+                                          {distrito.precio}
+                                        </span>
+                                      )
+                                  )}
                                 </h5>
                               </td>
                             </tr>
                           </thead>
                         </table>
                       </div>
-                    )}
+                        )
+                      : (
+                          ''
+                        )}
 
                     <div className="mycartsale1">
                       <h3>
                         Total a pagar:{' '}
                         <b id="totalCart">
-                          <Total />
+                          {values.distrito && values.despacho == '1'
+                            ? (
+                                distritos.map(
+                                  (distrito: { id: string, precio: any }) =>
+                                    distrito.id == values.distrito && (
+                                  <TotalDelivery
+                                    delivery={distrito.precio}
+                                    key={distrito.id}
+                                  />
+                                    )
+                                )
+                              )
+                            : (
+                            <Total />
+                              )}
                         </b>
                       </h3>
 
@@ -486,34 +605,113 @@ const Compra = (): JSX.Element => {
                       </option>
                     </select>
                   </div>
+
                   <ErrorsBig
                     errors={errors.despacho}
                     touched={touched.despacho}
                   />
                 </div>
                 {values.despacho == '1' && (
-                  <div className="mycartpanel1 mycart-nobotm box_enviodelivery">
-                    <div className="mycart-heading">
-                      <h5 className="mycart-title">Despacho a domicilio</h5>
-                    </div>
+                  <>
+                    {loadinDistrito
+                      ? (
+                      <p>cargando ...</p>
+                        )
+                      : (
+                      <div className="mycartpanel1 mycart-nobotm box_enviodelivery">
+                        <div className="mycart-heading">
+                          <h5 className="mycart-title">Despacho a domicilio</h5>
+                        </div>
 
-                    <div className="mycart-body">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="direccionUsuario"
-                        name="direccion"
-                        placeholder="Dirección y Referencia"
-                        value={values.direccion}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                      />
-                      <Errors
-                        errors={errors.direccion}
-                        touched={touched.direccion}
-                      />
-                    </div>
-                  </div>
+                        <div className="mycart-body">
+                          <h5 className="mycart-title">Departamento</h5>
+                          <select
+                            id="opciondespacho"
+                            className={`opciondespacho selectpicker border mt-3 py-1 ${
+                              errors.departamento && touched.departamento
+                                ? 'bg-main text-white'
+                                : ''
+                            } `}
+                            name="departamento"
+                            value={values.departamento}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            disabled={!!validation}
+                          >
+                            <option value="">Elige una opción</option>
+
+                            {departamentos.map(
+                              (departamento: {
+                                id: number
+                                nombre: string
+                              }) => (
+                                <option
+                                  value={departamento.id}
+                                  key={departamento.id}
+                                >
+                                  {departamento.nombre}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
+                        {values.departamento && (
+                          <div className="mycart-body">
+                            <h5 className="mycart-title">Distrito</h5>
+                            <select
+                              id="opciondespacho"
+                              className={`opciondespacho selectpicker border mt-3 py-1 ${
+                                errors.distrito && touched.distrito
+                                  ? 'bg-main text-white'
+                                  : ''
+                              } `}
+                              name="distrito"
+                              value={values.distrito}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              disabled={!!validation}
+                            >
+                              <option value="">Elige una opción</option>
+                              {distritos.map(
+                                (distrito: {
+                                  id: number
+                                  nombre: string
+                                  precio: number
+                                }) => (
+                                  <option value={distrito.id} key={distrito.id}>
+                                    {distrito.nombre}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                          </div>
+                        )}
+
+                        {values.distrito && values.departamento
+                          ? (
+                          <div className="mycart-body">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="direccionUsuario"
+                              name="direccion"
+                              placeholder="Dirección y Referencia"
+                              value={values.direccion}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            <Errors
+                              errors={errors.direccion}
+                              touched={touched.direccion}
+                            />
+                          </div>
+                            )
+                          : (
+                              ''
+                            )}
+                      </div>
+                        )}
+                  </>
                 )}
 
                 <div className="mycartpanel1 mycart-nobotm box_retirocompra">
@@ -539,9 +737,7 @@ const Compra = (): JSX.Element => {
                         type="submit"
                         className="countarget-img envioFormulario pagoCulqui outline-none text-center flex items-center justify-center"
                       >
-                        <span className="countarget-box">
-                          Cargando ...
-                        </span>
+                        <span className="countarget-box">Cargando ...</span>
                       </button>
                         )
                       : (
@@ -568,7 +764,12 @@ const Compra = (): JSX.Element => {
                       />
                     )}
 
-                    <button className="countarget-img envioFormulario pagotransfer flex items-center justify-center" onClick={() => { enviarPorWhatsApp() }}>
+                    <button
+                      className="countarget-img envioFormulario pagotransfer flex items-center justify-center"
+                      onClick={() => {
+                        enviarPorWhatsApp()
+                      }}
+                    >
                       <img src={coti} title="Voucher" />
                       <span className="countarget-box">
                         Cotización por Whatsapp
