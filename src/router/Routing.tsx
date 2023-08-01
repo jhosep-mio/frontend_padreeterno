@@ -21,19 +21,23 @@ export const Routing = (): JSX.Element => {
         <Routes>
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<Index />} />
-            <Route path='home' element={<Index />} />
-            <Route path='contacto' element={<Contacto />} />
-            <Route path='tienda' element={<Tienda />} />
-            <Route path='categorias/:id' element={<Categorias />} />
-            <Route path='producto-descripcion/:id' element={<ViewProducto />} />
-            <Route path='servicios' element={<Servicios/>}/>
-            <Route path='carrito' element={<Carrito/>}/>
-            <Route path='login' element={<Login/>}/>
-            <Route path='registro' element={<Registro/>}/>
-            <Route path='compra' element={<Compra/>}/>
-            <Route path='success-pago/:ui' element={<SuccesPago/>}/>
-            <Route path='error-pago' element={<ErrorPago/>}/>
+            <Route path="home" element={<Index />} />
+            <Route path="contacto" element={<Contacto />} />
+            <Route path="tienda" element={<Tienda />} />
+            <Route path="categorias/:id" element={<Categorias />} />
+            <Route path="producto-descripcion/:id" element={<ViewProducto />} />
+            <Route path="servicios" element={<Servicios />} />
+            <Route path="carrito" element={<Carrito />} />
+            <Route path="login" element={<Login />} />
+            <Route path="registro" element={<Registro />} />
+            <Route path="compra" element={<Compra />} />
+            <Route path="success-pago/:ui" element={<SuccesPago />} />
+            <Route path="error-pago" element={<ErrorPago />} />
+            <Route path="*" element={<Index />} />
           </Route>
+          {/* <Route path="*" element={<PublicLayout />}>
+            <Route index element={<Index />} />
+          </Route> */}
         </Routes>
       </AuthProvider>
     </BrowserRouter>
